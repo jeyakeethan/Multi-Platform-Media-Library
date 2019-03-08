@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item-divider>
+    <ion-label color="primary">Song</ion-label>
+  </ion-item-divider>
+  <ion-button (click)="selectSongDir()">Select song directories</ion-button>
+  <ion-item>Upload to servers&nbsp;<ion-checkbox></ion-checkbox></ion-item>
+
+  <ion-item-divider>
+    <ion-label color="primary">Movie</ion-label>
+  </ion-item-divider>
+  <ion-button (click)="selectMovieDir()">Select movie directories</ion-button>
+  <ion-item>Upload to servers&nbsp;<ion-checkbox></ion-checkbox></ion-item>
+  
+  <ion-item-divider>
+    <ion-label color="primary">Image</ion-label>
+  </ion-item-divider>
+  <ion-button (click)="selectImageDir()">Select image directories</ion-button>
+  <ion-item>Upload to servers&nbsp;<ion-checkbox></ion-checkbox></ion-item>
+  
+<div *ngIf="selectPath">
+  <ion-item><ion-icon name="arrow-round-up" (click)="goUp()">...</ion-icon></ion-item>
+
+  <div *ngFor="let item of fileList">
+    <ion-item>
+      <div *ngIf="item.isDirectory" (click)="goDown(item)">
+        <ion-item><ion-icon name="folder"></ion-icon>>{{item.name}}</ion-item>
+      </div>
+      <ion-checkbox (ionChange)="addDirectory(item)" ng-checked="false"></ion-checkbox>
+    </ion-item>
+  </div>
+  <ion-button (click)="saveConfig()">
+    Save changes
+    <ion-icon slot="end" name="save"></ion-icon>
+  </ion-button>
+</div>
+</ion-content>
+
+
+<!--
+<div *ngFor="let item of items">
+
+  <div *ngIf="item.isDirectory" (click)="goDown(item)">
+    <ion-item><ion-icon name="folder"></ion-icon>>{{item.name}}<ion-checkbox></ion-checkbox></ion-item>
+  </div>
+
+  <div *ngIf="item.isFile">
+    <ion-item>File: {{item.name}}</ion-item>
+  </div>
+
+</div>-->

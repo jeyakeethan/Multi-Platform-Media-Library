@@ -1,0 +1,86 @@
+/*
+    listDir = (path, dirName) => {
+      this.file.listDir(path, dirName)
+        .then(entries => {
+          this.items = entries;
+        })
+        .catch(this.handleError);
+    };
+    goDown = item => {
+      const parentNativeURL = item.nativeURL.replace(item.name, "");
+      this.savedParentNativeURLs.push(parentNativeURL);
+    
+      this.listDir(parentNativeURL, item.name);
+    };
+    goUp = () => {
+      const parentNativeURL = this.savedParentNativeURLs.pop();
+    
+      this.listDir(parentNativeURL, "");
+    };
+
+    handleError = error => {
+      console.log("error reading,", error);
+    };
+    getItems(event){
+ Reset items back to all of the items
+      this.initializeItems();
+      // set val to the value of the ev target
+      var val = ev.target.value;
+      // if the value is an empty string don't filter the items
+      if (val && val.trim() != '') {
+        this.items = this.items.filter((item) => {
+          return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        })
+      }
+    }*/
+
+
+
+
+ /*
+   scanSongs(){
+     let songs=new Array();
+     this.getSongDirectories().then(paths=>{
+      paths.forEach(element => {
+
+        this.file
+        .listDir(element, '')
+        .then(entries => {
+          entries.forEach(dir=>{
+            if(dir.isFile&&dir.toURL().toLowerCase().includes('.mp3')){
+              songs.push(dir.toURL);
+            }
+          });
+        })
+      });
+     });
+     return songs;
+   }
+   
+   getSongDirectories(){
+     return this.httpClient.get<any>(this.file.dataDirectory+"/songdirectories.json")
+      .toPromise()
+      .then(res => <string[]> res.data)
+      .then(data => data);
+   }
+   flushSongPath(path:any){
+     this.file.writeFile(this.file.dataDirectory, 'songdirectories.json',path);    
+   }*/
+
+
+    
+<!--<p-table [columns]="cols" [resizableColumns]="true" [rows]="songs" selectionMode="single" [(selection)]="selectedSong" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="10">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of cols"  pResizableColumn>
+                {{col}}
+            </th>
+        </tr>
+    </ng-template><ng-template pTemplate="body" let-rows>
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let row of rows">
+                {{rows}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>-->
