@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="MPML_GUI">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="747" height="400"/>
+    </constraints>
+    <properties>
+      <preferredSize width="469" height="500"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="7e29c" binding="container" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="b592b" binding="buttons" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-6180886"/>
+              <foreground color="-5263639"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="110c1" class="javax.swing.JButton" binding="musicButton">
+                <constraints/>
+                <properties>
+                  <icon value="assets/music.png"/>
+                  <label value="Music"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <maximumSize width="100" height="55"/>
+                  <minimumSize width="50" height="50"/>
+                  <name value="musicButton"/>
+                  <preferredSize width="90" height="50"/>
+                  <text value="Music"/>
+                </properties>
+              </component>
+              <component id="48909" class="javax.swing.JButton" binding="videoButton">
+                <constraints/>
+                <properties>
+                  <icon value="assets/video.png"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <maximumSize width="100" height="55"/>
+                  <minimumSize width="50" height="50"/>
+                  <name value="videoButton"/>
+                  <preferredSize width="90" height="50"/>
+                  <text value="Movie"/>
+                </properties>
+              </component>
+              <component id="d8843" class="javax.swing.JButton" binding="PDFButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <icon value="assets/pdf.png"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <maximumSize width="100" height="55"/>
+                  <minimumSize width="100" height="45"/>
+                  <name value="PDFButton"/>
+                  <preferredSize width="90" height="50"/>
+                  <text value="PDF"/>
+                </properties>
+              </component>
+              <component id="ed913" class="javax.swing.JButton" binding="settingButton">
+                <constraints/>
+                <properties>
+                  <icon value="assets/setting.png"/>
+                  <margin top="0" left="0" bottom="0" right="0"/>
+                  <maximumSize width="100" height="45"/>
+                  <minimumSize width="100" height="45"/>
+                  <name value="settingButton"/>
+                  <preferredSize width="100" height="50"/>
+                  <text value="Setting"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="371ad" binding="window" layout-manager="CardLayout" hgap="0" vgap="0" show="8beb3">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <name value=""/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="fcb70" binding="settingPanel" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="10" left="20" bottom="10" right="20"/>
+                <constraints>
+                  <card name="settingPanel"/>
+                </constraints>
+                <properties>
+                  <background color="-7482"/>
+                  <foreground color="-15921907"/>
+                  <name value="settingPanel"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="fdb37" class="javax.swing.JTextField" binding="PDFDir">
+                    <constraints>
+                      <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="d0755" class="javax.swing.JCheckBox" binding="uploadToServerCheckBox" default-binding="true">
+                    <constraints>
+                      <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Upload to Server"/>
+                    </properties>
+                  </component>
+                  <component id="c6c2" class="javax.swing.JButton" binding="saveConfigurationsButton" default-binding="true">
+                    <constraints>
+                      <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Save Configurations"/>
+                    </properties>
+                  </component>
+                  <component id="95c3c" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <foreground color="-15000805"/>
+                      <text value="PDF Directory"/>
+                    </properties>
+                  </component>
+                  <component id="f0da9" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <foreground color="-15856114"/>
+                      <text value="Video Directory"/>
+                    </properties>
+                  </component>
+                  <component id="d7010" class="javax.swing.JTextField" binding="videoDir">
+                    <constraints>
+                      <grid row="4" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="e5759" class="javax.swing.JTextField" binding="songDir">
+                    <constraints>
+                      <grid row="3" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="90b49" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <foreground color="-16445440"/>
+                      <text value="Songs Directory"/>
+                    </properties>
+                  </component>
+                  <component id="50475" class="javax.swing.JTextField" binding="username">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="4176e" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-16710912"/>
+                      <foreground color="-16710912"/>
+                      <text value="Password:"/>
+                    </properties>
+                  </component>
+                  <component id="e62a5" class="javax.swing.JTextField" binding="password">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                  </component>
+                  <component id="a97e4" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <foreground color="-16710912"/>
+                      <text value="Username:"/>
+                    </properties>
+                  </component>
+                  <component id="963c5" class="javax.swing.JButton" binding="loginButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Login"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="ff361" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
+                    <constraints>
+                      <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Logout"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <scrollpane id="8beb3" binding="sContainer">
+                <constraints>
+                  <card name="sContainer"/>
+                </constraints>
+                <properties>
+                  <autoscrolls value="false"/>
+                  <background color="-129278"/>
+                  <horizontalScrollBarPolicy value="31"/>
+                  <name value="sContainer"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="83d75" binding="songPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                    <constraints/>
+                    <properties>
+                      <autoscrolls value="true"/>
+                      <background color="-4856589"/>
+                      <inheritsPopupMenu value="false"/>
+                      <name value="songPanel"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </scrollpane>
+              <scrollpane id="76ac3" binding="PContainer">
+                <constraints>
+                  <card name="PContainer"/>
+                </constraints>
+                <properties>
+                  <background color="-431291"/>
+                  <horizontalScrollBarPolicy value="31"/>
+                  <name value="PContainer"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="66737" binding="PDFPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints/>
+                    <properties>
+                      <background color="-9868951"/>
+                      <name value="PDFPanel"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </scrollpane>
+              <scrollpane id="d014a" binding="vContainer">
+                <constraints>
+                  <card name="vContainer"/>
+                </constraints>
+                <properties>
+                  <background color="-2636290"/>
+                  <horizontalScrollBarPolicy value="31"/>
+                  <name value="vContainer"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="ada41" binding="videoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-3229442"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <vspacer id="4f8b6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
