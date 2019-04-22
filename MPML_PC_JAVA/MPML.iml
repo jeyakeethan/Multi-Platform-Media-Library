@@ -12,7 +12,6 @@
     <orderEntry type="library" name="jid3lib-0.5.2" level="application" />
     <orderEntry type="library" name="jdpapi-java-1.0.1" level="application" />
     <orderEntry type="library" name="jaudiotagger-2.0.2" level="application" />
-    <orderEntry type="library" name="Lib" level="application" />
-    <orderEntry type="library" name="Lib1" level="application" />
+    <orderEntry type="library" name="Lib" level="project" />
   </component>
 </module>
