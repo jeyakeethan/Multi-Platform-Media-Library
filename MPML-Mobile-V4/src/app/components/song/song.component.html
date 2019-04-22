@@ -1,19 +1,12 @@
-<ion-content padding>
+<ion-content>
 <ion-item class="Search"><ion-searchbar type="Search" (ionInput)="getItems($event)"></ion-searchbar></ion-item>
 <!--div *ngIf="display" class="display" autoplay="true" id="aPlayer" #musicplayer>
     <ion-item class="ionaudioplayer"><audio class="audioplayer" src="{{songPlaying}}" autoplay="true" controls="controls" #audioplayer></audio></ion-item>
 </div-->
-<ion-list class="list">
-    <!--div id="login-container">!(loggedIn)
-        <form *ngSubmit="login()" #registerForm="ngForm">
-            <ion-item>
-                <ion-input type="text" placeholder="Username" name="username" [(ngModel)]="username" required></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-input type="text" placeholder="Password " name="password" [(ngModel)]="password" required></ion-input>
-            </ion-item>
-        </form>
-    </div-->
+<ion-list class="list" >
+    
+    <ion-item *ngIf="songs==null"><ion-button  slot="end"shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
+    
     <ion-item>
         <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
         <ion-label color="primary" (click)="sortItems('album')">Album</ion-label>
@@ -21,7 +14,11 @@
         <ion-label color="primary" (click)="sortItems('size')">Size</ion-label>
         <ion-label color="primary" (click)="sortItems('duration')">Duration</ion-label>
     </ion-item>
-    <ion-item-sliding *ngFor="let song of songs;let i = index;">
+    <ion-item *ngIf="shareDisplay">
+        <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
+        <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+    </ion-item>
+    <ion-item-sliding *ngFor="let song of songs;let i = index;" #dynamicList>
         <ion-item (click)="openItem(song)">
             <ion-label class="title" color="dark">{{song.name}}</ion-label>
             <ion-label color="dark">{{song.album}}</ion-label>
@@ -30,10 +27,11 @@
             <ion-label color="dark">{{song.duration}}</ion-label>
         </ion-item>
         <ion-item-options side="start">
-            <ion-button (click)="downloadSong(song.id)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
+            <ion-button (click)="deleteSong(i)"><ion-icon name="trash"></ion-icon></ion-button>
         </ion-item-options>
         <ion-item-options side="end">
-            <ion-button (click)="deleteSong(i)"><ion-icon name="trash"></ion-icon></ion-button>
+            <ion-button *ngIf="!song.available" (click)="downloadSong(song)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
+            <ion-button (click)="shareDisplay=!shareDisplay; selectedSongToShare=song;"><ion-icon name="share"></ion-icon></ion-button>
         </ion-item-options>
     </ion-item-sliding>
 </ion-list>

@@ -1,24 +1,30 @@
-<ion-content padding>    
+<ion-content>    
     <ion-item class="Search"><ion-searchbar type="Search" (ionInput)="getItems($event)"></ion-searchbar></ion-item>
     <ion-list class="list">
+        <ion-item *ngIf="videos==null"><ion-button  slot="end"shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
         <ion-item>
             <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
-            <ion-label color="primary" (click)="sortItems('album')">Album</ion-label>
-            <ion-label color="primary" (click)="sortItems('artist')">Artist</ion-label>
+            <ion-label color="primary" (click)="sortItems('album')">Date</ion-label>
+            <ion-label color="primary" (click)="sortItems('artist')">Duration</ion-label>
             <ion-label color="primary" (click)="sortItems('size')">Size</ion-label>
-            <ion-label color="primary" (click)="sortItems('duration')">Duration</ion-label>
+        </ion-item>
+        <ion-item *ngIf="shareDisplay">
+            <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
+            <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
         </ion-item>
         <ion-item-sliding *ngFor="let video of videos;let i = index;">
             <ion-item (click)="openItem(video)">
                 <ion-label class="title" color="dark">{{video.name}}</ion-label>
-                <ion-label color="dark">{{video.album}}</ion-label>
-                <ion-label color="dark">{{video.artist}}</ion-label>
-                <ion-label color="dark">{{video.size}}</ion-label>
+                <ion-label color="dark">{{video.date}}</ion-label>
                 <ion-label color="dark">{{video.duration}}</ion-label>
+                <ion-label color="dark">{{video.size}}</ion-label>
             </ion-item>
-            <ion-item-options>
+            <ion-item-options side="start">
                 <ion-button (click)="deleteVideo(i)"><ion-icon name="trash"></ion-icon></ion-button>
+            </ion-item-options>
+            <ion-item-options side="end">
                 <ion-button (click)="downloadVideo(video.id)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
+                <ion-button (click)="shareDisplay=!shareDisplay; selectedVideoToShare=video;"><ion-icon name="share"></ion-icon></ion-button>
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>

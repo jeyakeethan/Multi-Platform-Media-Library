@@ -1,16 +1,52 @@
 import { Component, OnInit} from '@angular/core';
-import { File } from '@ionic-native/file/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
-import { Platform, LoadingController } from '@ionic/angular';
-
-import {FsService} from "../service/fs.service";
-
+import {FsService, User} from "../service/fs.service";
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-tab4',
   templateUrl: 'tab4.page.html',
   styleUrls: ['tab4.page.scss'],
-  providers:[File, FsService]
+  providers:[FsService,]
 })
+export class Tab4Page {
+    username:string;
+    password:string;
+    loggedIn:boolean=false;
+    user:User;
+    constructor(private fileService:FsService, private nav:NavController) {
+      this.user=FsService.user;
+      if(this.user!=null){
+        this.loggedIn=true;
+        this.username=FsService.user.name;
+      }
+    } 
+
+    public login() {
+      if(this.username!=""&&this.password!=""){
+        let success = this.fileService.login(this.username, this.password);
+        if(success){
+          alert("Login Success!");
+          this.loggedIn=true;
+        }
+        else{
+          this.username = "";
+          this.password = "";
+          alert("User name or Password missmatch!");
+        }
+      }
+    }
+    public logout(){
+      let success = this.fileService.logout();
+        if(success){
+          alert("Logout success!");
+          FsService.user=null;
+          this.loggedIn=false;
+          this.nav.pop();
+          this.nav.pop();
+          this.nav.pop();
+        }
+    }
+}
+/*
 export class Tab4Page {
   selectPath;
   savedParentNativeURLs = [];
@@ -42,7 +78,7 @@ export class Tab4Page {
         this.items = entries;
       })
       .catch(this.handleError);
-  };*/
+  };
   goDown = item => {
     const parentNativeURL = item.nativeURL.replace(item.name, "");
     this.savedParentNativeURLs.push(parentNativeURL);
@@ -104,3 +140,4 @@ export class Tab4Page {
     }
   }
 }
+*/

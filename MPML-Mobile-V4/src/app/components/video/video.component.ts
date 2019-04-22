@@ -15,10 +15,16 @@ export class Video{
   providers:[FsService,]
 })
 export class VideoComponent{
+  username:string;
+  password:string;
+  loginPanel:boolean;
   videos :Video[];
-  selectedVideo:Video;
+  sharedId:string;
+  selectedVideoToShare:Video;
   videoPlaying:string;
   constructor(private platform: Platform, private fs:FsService){
+    this.loginPanel=FsService.user==null?true:false;
+      //this.fs.getVideos().then(videos=>this.videos=videos);
     platform.ready()
     .then(() => {
       this.fs.getVideos().then(videos=>this.videos=videos);
@@ -32,7 +38,7 @@ export class VideoComponent{
   public openItem($item){
     let available = this.fs.openFile(1, $item.id);
     if(!available){
-      alert("Download before play!");
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
     }
   }
 
@@ -68,5 +74,33 @@ export class VideoComponent{
         });
       break;
     }
+  }
+  reload(){
+    this.loginPanel=FsService.user==null?true:false;
+    this.fs.loadMoviesFromServer().then(videos=>this.videos=videos);
+  }
+  public login() {
+    if(this.username!=""&&this.password!=""){
+      let success = this.fs.login(this.username, this.password);
+      if(success){
+        this.loginPanel=false;
+        this.fs.loadSongsFromServer().then(videos=>this.videos=videos);
+        alert("Login Success!");
+      }
+      else{
+        this.username = "";
+        this.password = "";
+        alert("User name or Password missmatch!");
+      }
+    }
+  }
+  public ionViewWillEnter(): void {
+    if(this.videos==null){
+      this.fs.loadSongsFromServer().then(videos=>this.videos=videos);
+    }
+      this.loginPanel=FsService.user==null?true:false;
+  }
+  public share(){
+    this.fs.share(1,this.selectedVideoToShare.id,this.sharedId);
   }
 }

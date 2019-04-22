@@ -14,6 +14,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 //import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { FsService } from '../service/fs.service';
 
@@ -23,12 +24,15 @@ import { FsService } from '../service/fs.service';
     CommonModule,
     FormsModule,
     HttpClientModule,
+
 //    InputTextModule,
 //    ButtonModule,
 //    TableModule,
 //    DialogModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ], providers: [File, FilePath, FileOpener,
+    FileTransfer,
+    FileTransferObject,
     //MusicControls,
      FsService],
   declarations: [Tab1Page, SongComponent]

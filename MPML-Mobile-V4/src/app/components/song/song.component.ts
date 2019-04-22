@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform,IonList } from '@ionic/angular';
 //import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { FsService } from 'src/app/service/fs.service';
 export class Song{
-  constructor(public name?, public album?, public artist?, public duration?, public size?,public id?){
+  constructor(public name?, public album?, public artist?, public duration?, public size?,public id?, public available?:boolean){
   }
 }
   
@@ -14,36 +14,44 @@ export class Song{
   styleUrls: ['./song.component.scss'],
   providers:[FsService,]
 })
-export class SongComponent{
 
+export class SongComponent{
+    username:string;
+    password:string;
+    @ViewChild('dynamicList') dynamiclist:IonList;
     songs :Song[];
-    selectedSong:Song;
-    display:boolean;
+    sharedId:string;
+    selectedSongToShare:Song;
     songPlaying:string;
     constructor(private platform: Platform, private fs:FsService){
-      
-      this.display=false;
      platform.ready()
       .then(() => {
-        this.fs.loadSongsFromServer().then(songs=>this.songs=songs);
-      })
+        this.fs.getSongs().then(songs=>this.songs=songs);
+      });
     }
-    public deleteSong(index:number){
+    public async deleteSong(index:number){
       this.songs.splice(index, 1);
       this.fs.deleteFile(0,this.songs[index].id);
+      await this.dynamiclist.closeSlidingItems();
     }
 
     public openItem($item){
-      let available = this.fs.openFile(0, $item.id);
+      let available = this.fs.openFile(0, $item.name);
       if(!available){
-        this.display=true;
-    // this.songPlaying=
         window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+$item.id+".mp3",'_system','location=yes');
       }
+      /*if($item.available){
+       this.fs.openFile(0, $item.name);
+      }
+      else{
+        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+$item.id+".mp3",'_system','location=yes');
+      }*/
     }
 
-    public downloadSong($id){
-      this.fs.downloadFile(0,$id);
+    public downloadSong($song){
+      this.platform.ready().then(()=>{
+        this.fs.downloadFile(0,$song.id,$song.name);
+      })
     }
 
     sortItems(tag){
@@ -75,4 +83,15 @@ export class SongComponent{
         break;
       }
     }
+    public reload(){
+      this.fs.loadSongsFromServer().then(songs=>this.songs=songs);
+    }
+  public ionViewDidEnter(): void {
+    if(this.songs==null){
+      this.fs.loadSongsFromServer().then(songs=>this.songs=songs);
+    }
+  }
+  public share(){
+    this.fs.share(0,this.selectedSongToShare.id,this.sharedId);
+  }
 }

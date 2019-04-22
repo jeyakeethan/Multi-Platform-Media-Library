@@ -1,4 +1,36 @@
-<ion-header>
+<ion-content>
+  <div class="container" *ngIf="!loggedIn"><ion-list>
+      <ion-item>
+        <ion-label floating>Login to MPML</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="username" type="text" value="" placeholder="Username"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-input [(ngModel)]="password"  type="password" value="" placeholder="Password"></ion-input>
+      </ion-item>
+      
+    </ion-list>
+    <ion-item>
+          <ion-button slot="end" shape="round" size="default" fill="outline" (click)="login()">Sign in</ion-button>
+    </ion-item>
+  </div>
+  <div *ngIf="loggedIn">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>MPML Account</ion-label>
+      </ion-item>
+      <ion-item>
+          <ion-label floating>Username: {{username}}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+        <ion-button slot="end" shape="round" size="default" fill="outline" (click)="logout()">Sign off</ion-button>
+    </ion-item>
+  </div>
+</ion-content>
+<!--<ion-header>
   <ion-toolbar>
     <ion-title>Settings</ion-title>
   </ion-toolbar>
@@ -43,7 +75,6 @@
 </ion-content>
 
 
-<!--
 <div *ngFor="let item of items">
 
   <div *ngIf="item.isDirectory" (click)="goDown(item)">
