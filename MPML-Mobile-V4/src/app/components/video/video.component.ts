@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 
 export class Video{
-  constructor(public name?, public album?, public artist?, public duration?, public size?, public id?){
+  constructor(public name?, public date?, public duration?, public size?, public id?, public available?){
   }
 }
 
@@ -14,38 +14,71 @@ export class Video{
   styleUrls: ['./video.component.scss'],
   providers:[FsService,]
 })
+
 export class VideoComponent{
   username:string;
   password:string;
-  loginPanel:boolean;
   videos :Video[];
+  videosRetrieved :Video[];
   sharedId:string;
   selectedVideoToShare:Video;
   videoPlaying:string;
+  public searching: Boolean = false;
+  public searchTerm:string = "";
   constructor(private platform: Platform, private fs:FsService){
-    this.loginPanel=FsService.user==null?true:false;
-      //this.fs.getVideos().then(videos=>this.videos=videos);
-    platform.ready()
-    .then(() => {
-      this.fs.getVideos().then(videos=>this.videos=videos);
-    })
   }
+  onInit(){
+    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+    this.videos = this.videosRetrieved;
+    this.platform.ready().then(()=>{
+      this.videosRetrieved.forEach(element => {
+        element.available=this.fs.checkFile(0,element.name);
+      });
+      this.videos = this.videosRetrieved;
+    });
+  }
+
+  public cancelSearch(){
+    this.searching = false;
+    this.videos = this.videosRetrieved;
+  }
+  public setFilteredItems(){
+    this.searching = true;
+    if(this.searchTerm==""){
+      this.videos = this.videosRetrieved;
+    }
+    else{
+      var key = this.searchTerm.toLowerCase();
+      this.videos = this.videosRetrieved.filter(video => {
+        return String(video.name).toLowerCase().startsWith(key);
+      });
+    }
+    this.searching = false;
+  }
+
   public async deleteVideo(index:number){
     this.videos.splice(index, 1);
-    this.fs.deleteFile(1,this.videos[index].id);
+    this.fs.deleteFile(0,index);
   }
 
   public openItem($item){
-    let available = this.fs.openFile(1, $item.id);
+    let available = this.fs.openFile(0, $item.name);
     if(!available){
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp3",'_system','location=yes');
     }
+    /*if($item.available){
+     this.fs.openFile(0, $item.name);
+    }
+    else{
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp3",'_system','location=yes');
+    }*/
   }
 
-  public downloadVideo($id){
-    this.fs.downloadFile(1,$id);
+  public downloadVideo($video){
+    this.platform.ready().then(()=>{
+      this.fs.downloadFile(0,$video.id,$video.name);
+    })
   }
-
   sortItems(tag){
     switch(tag){
       case 'name':
@@ -53,14 +86,9 @@ export class VideoComponent{
           if(a.name < b.name)return -1;else return 1;
         });
       break;
-      case 'album':
+      case 'date':
         this.videos = this.videos.sort(function(a, b){
-          if(a.album < b.album)return -1;else return 1;
-        });
-      break;
-      case 'artist':
-        this.videos = this.videos.sort(function(a, b){
-          if(a.artist < b.artist)return -1;else return 1;
+          if(a.date < b.date)return -1;else return 1;
         });
       break;
       case 'duration':
@@ -75,32 +103,17 @@ export class VideoComponent{
       break;
     }
   }
-  reload(){
-    this.loginPanel=FsService.user==null?true:false;
-    this.fs.loadMoviesFromServer().then(videos=>this.videos=videos);
+  public reload(){
+    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+    this.videos = this.videosRetrieved;
   }
-  public login() {
-    if(this.username!=""&&this.password!=""){
-      let success = this.fs.login(this.username, this.password);
-      if(success){
-        this.loginPanel=false;
-        this.fs.loadSongsFromServer().then(videos=>this.videos=videos);
-        alert("Login Success!");
-      }
-      else{
-        this.username = "";
-        this.password = "";
-        alert("User name or Password missmatch!");
-      }
-    }
+public ionViewDidEnter(): void {
+  if(this.videos==null){
+    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+    this.videos = this.videosRetrieved;
   }
-  public ionViewWillEnter(): void {
-    if(this.videos==null){
-      this.fs.loadSongsFromServer().then(videos=>this.videos=videos);
-    }
-      this.loginPanel=FsService.user==null?true:false;
-  }
-  public share(){
-    this.fs.share(1,this.selectedVideoToShare.id,this.sharedId);
-  }
+}
+public share(){
+  this.fs.share(0,this.selectedVideoToShare.id,this.sharedId);
+}
 }

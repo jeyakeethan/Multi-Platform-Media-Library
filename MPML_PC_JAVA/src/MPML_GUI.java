@@ -240,7 +240,7 @@ public class MPML_GUI {
     private void getVideoPanelReady(){
         this.videoPanel.setLayout(new BorderLayout());
         videoListPanel = new JPanel();
-        videoListPanel.setLayout(new FlowLayout());
+        videoListPanel.setLayout(new WrapLayout());
         videoListPanel.setBackground(new Color(206,184,254));
         videoListPanel.setMaximumSize(new Dimension(200,200));
         videoPanel.add(Video.getHeader(this),BorderLayout.NORTH);
@@ -571,13 +571,12 @@ public class MPML_GUI {
                 x.printStackTrace();
             }
             this.videoList.remove(videoList.indexOf(video));
-            this.videoPanel.removeAll();
-            videoPanel.add(Video.getHeader(this));
+            this.videoListPanel.removeAll();
             for(Video video1: videoList){
-                this.videoPanel.add(video1.getGUIVideo());
+                this.videoListPanel.add(video1.getGUIVideo());
             }
-            vContainer.revalidate();
-            vContainer.repaint();
+            videoListPanel.revalidate();
+            videoListPanel.repaint();
         }
     }
 

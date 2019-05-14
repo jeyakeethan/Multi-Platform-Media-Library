@@ -4,8 +4,7 @@ import { Platform } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 
 export class PDF{
-  constructor(public name?, public author?, public date?, public size?, public id?){
-
+  constructor(public name?, public author?, public date?, public size?, public id?, public available?){
   }
 }
 
@@ -15,43 +14,72 @@ export class PDF{
   styleUrls: ['./PDF.component.scss'],
   providers:[FsService,]
 })
+
 export class PDFComponent{
-  
-  username:string;
-  password:string;
-  PDFs :PDF[];
-  sharedId:string;
-  selectedPDFToShare:PDF;
-  PDFPlaying:string;
-  loginPanel:boolean;
-  constructor(private platform: Platform, private fs:FsService){
-    this.loginPanel=FsService.user==null?true:false;
-    
-    platform.ready()
-    .then(() => {
-      this.fs.getPDFs().then(PDFs=>this.PDFs=PDFs);
-      //this.fs.getPDFs().then(PDFs=>this.PDFs=PDFs);
-    })
-  }
-  public async deletePDF(index:number){
-    this.PDFs.splice(index, 1);
-    this.fs.deleteFile(2,this.PDFs[index].id);
-  }
-
-  public openItem($item){
-    let available = this.fs.openFile(2, $item.id);
-    if(!available){
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
+    username:string;
+    password:string;
+    PDFs :PDF[];
+    PDFsRetrieved :PDF[];
+    sharedId:string;
+    selectedPDFToShare:PDF;
+    songPlaying:string;
+    public searching: Boolean = false;
+    public searchTerm:string = "";
+    constructor(private platform: Platform, private fs:FsService){
     }
-  }
+    onInit(){
+      this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+      this.PDFs = this.PDFsRetrieved;
+      this.platform.ready().then(()=>{
+        this.PDFsRetrieved.forEach(element => {
+          element.available=this.fs.checkFile(0,element.name);
+        });
+        this.PDFs = this.PDFsRetrieved;
+      });
+    }
 
-  public downloadPDF($id){
-    this.fs.downloadFile(2,$id);
-  }
-  reload(){
-    this.loginPanel=FsService.user==null?true:false;
-    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFs=PDFs);
-  }
+    public cancelSearch(){
+      this.searching = false;
+      this.PDFs = this.PDFsRetrieved;
+    }
+    public setFilteredItems(){
+      this.searching = true;
+      if(this.searchTerm==""){
+        this.PDFs = this.PDFsRetrieved;
+      }
+      else{
+        var key = this.searchTerm.toLowerCase();
+        this.PDFs = this.PDFsRetrieved.filter(song => {
+          return String(song.name).toLowerCase().startsWith(key);
+        });
+      }
+      this.searching = false;
+    }
+
+    public async deletePDF(index:number){
+      this.PDFs.splice(index, 1);
+      this.fs.deleteFile(0,index);
+    }
+
+    public openItem($item){
+      let available = this.fs.openFile(0, $item.name);
+      if(!available){
+        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".mp3",'_system','location=yes');
+      }
+      /*if($item.available){
+       this.fs.openFile(0, $item.name);
+      }
+      else{
+        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".mp3",'_system','location=yes');
+      }*/
+    }
+
+    public downloadPDF($song){
+      this.platform.ready().then(()=>{
+        this.fs.downloadFile(0,$song.id,$song.name);
+      })
+    }
+
   sortItems(tag){
     switch(tag){
       case 'name':
@@ -76,12 +104,12 @@ export class PDFComponent{
       break;
     }
   }
-  public login() {
+  /*public login() {
     if(this.username!=""&&this.password!=""){
       let success = this.fs.login(this.username, this.password);
       if(success){
         this.loginPanel=false; 
-        this.fs.loadSongsFromServer().then(PDFs=>this.PDFs=PDFs);
+        this.fs.loadPDFsFromServer().then(PDFs=>this.PDFs=PDFs);
         alert("Login Success!");
       }
       else{
@@ -90,14 +118,19 @@ export class PDFComponent{
         alert("User name or Password missmatch!");
       }
     }
+  }*/
+  
+  public reload(){
+    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+    this.PDFs = this.PDFsRetrieved;
   }
-  public ionViewWillEnter(): void {
-    if(this.PDFs==null){
-      this.fs.loadSongsFromServer().then(PDFs=>this.PDFs=PDFs);
-    }
-      this.loginPanel=FsService.user==null?true:false;
+public ionViewDidEnter(): void {
+  if(this.PDFs==null){
+    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+    this.PDFs = this.PDFsRetrieved;
   }
-  public share(){
-    this.fs.share(2,this.selectedPDFToShare.id,this.sharedId);
-  }
+}
+public share(){
+  this.fs.share(0,this.selectedPDFToShare.id,this.sharedId);
+}
 } 

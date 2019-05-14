@@ -18,13 +18,14 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 //import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { FsService } from '../service/fs.service';
 
+import { ReactiveFormsModule } from "@angular/forms";
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-
+    ReactiveFormsModule,
 //    InputTextModule,
 //    ButtonModule,
 //    TableModule,

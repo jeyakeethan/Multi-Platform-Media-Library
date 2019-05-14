@@ -20,18 +20,46 @@ export class SongComponent{
     password:string;
     @ViewChild('dynamicList') dynamiclist:IonList;
     songs :Song[];
+    songsRetrieved :Song[];
     sharedId:string;
     selectedSongToShare:Song;
     songPlaying:string;
+    public searching: Boolean = false;
+    public searchTerm:string = "";
     constructor(private platform: Platform, private fs:FsService){
-     platform.ready()
-      .then(() => {
-        this.fs.getSongs().then(songs=>this.songs=songs);
+    }
+    onInit(){
+      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+      this.songs = this.songsRetrieved;
+      this.platform.ready().then(()=>{
+        this.songsRetrieved.forEach(element => {
+          element.available=this.fs.checkFile(0,element.name);
+        });
+        this.songs = this.songsRetrieved;
       });
     }
+
+    public cancelSearch(){
+      this.searching = false;
+      this.songs = this.songsRetrieved;
+    }
+    public setFilteredItems(){
+      this.searching = true;
+      if(this.searchTerm==""){
+        this.songs = this.songsRetrieved;
+      }
+      else{
+        var key = this.searchTerm.toLowerCase();
+        this.songs = this.songsRetrieved.filter(song => {
+          return String(song.name).toLowerCase().startsWith(key);
+        });
+      }
+      this.searching = false;
+    }
+
     public async deleteSong(index:number){
       this.songs.splice(index, 1);
-      this.fs.deleteFile(0,this.songs[index].id);
+      this.fs.deleteFile(0,index);
       await this.dynamiclist.closeSlidingItems();
     }
 
@@ -84,11 +112,13 @@ export class SongComponent{
       }
     }
     public reload(){
-      this.fs.loadSongsFromServer().then(songs=>this.songs=songs);
+      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+      this.songs = this.songsRetrieved;
     }
   public ionViewDidEnter(): void {
     if(this.songs==null){
-      this.fs.loadSongsFromServer().then(songs=>this.songs=songs);
+      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+      this.songs = this.songsRetrieved;
     }
   }
   public share(){

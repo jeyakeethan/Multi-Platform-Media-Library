@@ -96,7 +96,7 @@ class ServerConnection {
         int id = 0;
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = DriverManager.getConnection(this.host + this.dbName, this.user, this.pass);
-        PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO videos(name,date,duration,size ) VALUES (?,?,?,?);");
+        PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO movies(name,date,duration,size ) VALUES (?,?,?,?);");
 
         rs.setString(1, video.getName());
         rs.setString(2, video.getDate());
