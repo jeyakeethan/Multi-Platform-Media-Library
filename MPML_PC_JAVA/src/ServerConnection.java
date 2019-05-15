@@ -73,22 +73,34 @@ class ServerConnection {
         int id = 0;
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = DriverManager.getConnection(this.host + this.dbName, this.user, this.pass);
-        PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO songs(name,album,artist, duration,size ) VALUES (?,?,?,?,?);");
+        try{
+            connection.setAutoCommit(false);
+            PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO songs(name,album,artist, duration,size ) VALUES (?,?,?,?,?);");
 
-        rs.setString(1, song.getName());
-        rs.setString(2, song.getAlbum());
-        rs.setString(3, song.getArtist());
-        rs.setInt(4, song.getDuration());
-        rs.setInt(5, song.getSize());
-        int pst = rs.executeUpdate();
-        PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
-        ResultSet idRs = rsLastInsertID.executeQuery();
-        idRs.next();
-        id = idRs.getInt(1);
-        PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_song(user_id,song_id) VALUES (?,?);");
-        user_item.setInt(1, MPML_GUI.user.getId());
-        user_item.setInt(2, id);
-        int user_item_result = user_item.executeUpdate();
+            rs.setString(1, song.getName());
+            rs.setString(2, song.getAlbum());
+            rs.setString(3, song.getArtist());
+            rs.setInt(4, song.getDuration());
+            rs.setInt(5, song.getSize());
+            int pst = rs.executeUpdate();
+            PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
+            ResultSet idRs = rsLastInsertID.executeQuery();
+            idRs.next();
+            id = idRs.getInt(1);
+            PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_song(user_id,song_id) VALUES (?,?);");
+            user_item.setInt(1, MPML_GUI.user.getId());
+            user_item.setInt(2, id);
+            int user_item_result = user_item.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+        }catch (SQLException e1){
+            e1.printStackTrace();
+            try {
+                connection.rollback();
+            }catch (SQLException e2) {
+                System.out.println("cannot roll back :"+e2.toString());
+            }
+        }
         return id;
     }
 
@@ -96,21 +108,32 @@ class ServerConnection {
         int id = 0;
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = DriverManager.getConnection(this.host + this.dbName, this.user, this.pass);
-        PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO movies(name,date,duration,size ) VALUES (?,?,?,?);");
-
-        rs.setString(1, video.getName());
-        rs.setString(2, video.getDate());
-        rs.setInt(3, video.getDuration());
-        rs.setInt(4, video.getSize());
-        int pst = rs.executeUpdate();
-        PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
-        ResultSet idRs = rsLastInsertID.executeQuery();
-        idRs.next();
-        id = idRs.getInt(1);
-        PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_video(user_id,video_id) VALUES (?,?);");
-        user_item.setInt(1, MPML_GUI.user.getId());
-        user_item.setInt(2, id);
-        int user_item_result = user_item.executeUpdate();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO movies(name,date,duration,size ) VALUES (?,?,?,?);");
+            rs.setString(1, video.getName());
+            rs.setString(2, video.getDate());
+            rs.setInt(3, video.getDuration());
+            rs.setInt(4, video.getSize());
+            int pst = rs.executeUpdate();
+            PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
+            ResultSet idRs = rsLastInsertID.executeQuery();
+            idRs.next();
+            id = idRs.getInt(1);
+            PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_video(user_id,video_id) VALUES (?,?);");
+            user_item.setInt(1, MPML_GUI.user.getId());
+            user_item.setInt(2, id);
+            int user_item_result = user_item.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+        }catch (SQLException e1){
+            e1.printStackTrace();
+            try {
+                connection.rollback();
+            }catch (SQLException e2) {
+                System.out.println("cannot roll back :"+e2.toString());
+            }
+        }
         return id;
     }
 
@@ -119,20 +142,33 @@ class ServerConnection {
         int id = 0;
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = DriverManager.getConnection(this.host + this.dbName, this.user, this.pass);
-        PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO pdfs(name,author,date, size ) VALUES (?,?,?,?);");
-        rs.setString(1, pdf.getName());
-        rs.setString(2, pdf.getAuthor());
-        rs.setString(3, pdf.getDate());
-        rs.setInt(4, pdf.getSize());
-        int pst = rs.executeUpdate();
-        PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
-        ResultSet idRs = rsLastInsertID.executeQuery();
-        idRs.next();
-        id = idRs.getInt(1);
-        PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_pdf(user_id,pdf_id) VALUES (?,?);");
-        user_item.setInt(1, MPML_GUI.user.getId());
-        user_item.setInt(2, id);
-        int user_item_result = user_item.executeUpdate();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement rs = (PreparedStatement) connection.prepareStatement("INSERT INTO PDFs(name,author,date, size ) VALUES (?,?,?,?);");
+            rs.setString(1, pdf.getName());
+            rs.setString(2, pdf.getAuthor());
+            rs.setString(3, pdf.getDate());
+            rs.setInt(4, pdf.getSize());
+            int pst = rs.executeUpdate();
+            PreparedStatement rsLastInsertID = (PreparedStatement) connection.prepareStatement("SELECT LAST_INSERT_ID();");
+            ResultSet idRs = rsLastInsertID.executeQuery();
+            idRs.next();
+            id = idRs.getInt(1);
+            PreparedStatement user_item = (PreparedStatement) connection.prepareStatement("INSERT INTO user_PDF(user_id,pdf_id) VALUES (?,?);");
+            user_item.setInt(1, MPML_GUI.user.getId());
+            user_item.setInt(2, id);
+            int user_item_result = user_item.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+        }
+        catch (SQLException e1){
+            e1.printStackTrace();
+            try {
+                connection.rollback();
+            }catch (SQLException e2) {
+                System.out.println("cannot roll back :"+e2.toString());
+            }
+        }
         return id;
     }
 
