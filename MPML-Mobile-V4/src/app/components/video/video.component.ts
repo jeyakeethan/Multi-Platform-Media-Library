@@ -116,4 +116,17 @@ public ionViewDidEnter(): void {
 public share(){
   this.fs.share(0,this.selectedVideoToShare.id,this.sharedId);
 }
+public parseDuration(sec_num:number):String{
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let h = String(hours);
+    let m = String(minutes);
+    let s = String(seconds);
+    if (hours   < 10) {h   = "0"+h;}
+    if (minutes < 10) {m = "0"+m;}
+    if (seconds < 10) {s = "0"+s;}
+    let h1 = h == "00"?"":h+":";
+    return h1 +':'+m+':'+s;
+}
 }
