@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 
 export class Video{
-  constructor(public name?, public date?, public duration?, public size?, public id?, public available?){
+  constructor(public name?, public date?, public duration?, public size?, public id?, public cover?, public available?){
   }
 }
 
@@ -64,13 +64,13 @@ export class VideoComponent{
   public openItem($item){
     let available = this.fs.openFile(0, $item.name);
     if(!available){
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp3",'_system','location=yes');
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
     }
     /*if($item.available){
      this.fs.openFile(0, $item.name);
     }
     else{
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp3",'_system','location=yes');
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
     }*/
   }
 

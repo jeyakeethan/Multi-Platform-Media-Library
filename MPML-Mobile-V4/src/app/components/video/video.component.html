@@ -7,7 +7,7 @@
         <ion-spinner></ion-spinner>
     </div>
     <ion-list class="list">
-        <ion-item *ngIf="videos==null"><ion-button  slot="end"shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
+        <ion-item *ngIf="videos==null"><ion-button  slot="end" shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
         <ion-item>
             <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
             <ion-label color="primary" (click)="sortItems('date')">Date</ion-label>
@@ -18,7 +18,19 @@
             <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
             <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
         </ion-item>
-        <ion-item-sliding *ngFor="let video of videos;let i = index;">
+        <ion-grid>
+            <ion-row class="ion-align-items-start">
+                <ion-col *ngFor="let video of videos; let i = index;">
+                    <div class="video-class"(click)="openItem(video)">
+                        <ion-label text-wrap>{{video.name}}</ion-label>
+                        <ion-label text-wrap>{{video.date}}</ion-label>
+                        <ion-label text-wrap>{{video.duration}}</ion-label>
+                        <ion-label text-wrap>{{video.size}}</ion-label>
+                    </div>
+                </ion-col>
+            </ion-row>
+       </ion-grid>
+        <!-- <ion-item-sliding *ngFor="let video of videos; let i = index;">
             <ion-item (click)="openItem(video)">
                 <ion-label class="title" color="dark">{{video.name}}</ion-label>
                 <ion-label color="dark">{{video.date}}</ion-label>
@@ -32,7 +44,7 @@
                 <ion-button (click)="downloadVideo(video.id)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
                 <ion-button (click)="shareDisplay=!shareDisplay; selectedVideoToShare=video;"><ion-icon name="share"></ion-icon></ion-button>
             </ion-item-options>
-        </ion-item-sliding>
+        </ion-item-sliding>-->
     </ion-list>
     <!--ion-item>
         <ion-label>{{Notice}}</ion-label>

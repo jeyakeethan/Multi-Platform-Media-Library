@@ -64,13 +64,13 @@ export class PDFComponent{
     public openItem($item){
       let available = this.fs.openFile(0, $item.name);
       if(!available){
-        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".mp3",'_system','location=yes');
+        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
       }
       /*if($item.available){
        this.fs.openFile(0, $item.name);
       }
       else{
-        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".mp3",'_system','location=yes');
+        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
       }*/
     }
 

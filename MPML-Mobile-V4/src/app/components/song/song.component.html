@@ -13,10 +13,10 @@
     
     <ion-item>
         <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
-        <ion-label color="primary" (click)="sortItems('album')">Album</ion-label>
-        <ion-label color="primary" (click)="sortItems('artist')">Artist</ion-label>
-        <ion-label color="primary" (click)="sortItems('size')">Size</ion-label>
-        <ion-label color="primary" (click)="sortItems('duration')">Duration</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('album')">Album</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('artist')">Artist</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('size')">Size</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('duration')">Duration</ion-label>
     </ion-item>
     <ion-item *ngIf="shareDisplay">
         <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
@@ -25,10 +25,10 @@
     <ion-item-sliding *ngFor="let song of songs;let i = index;" #dynamicList>
         <ion-item (click)="openItem(song)">
             <ion-label class="title" color="dark">{{song.name}}</ion-label>
-            <ion-label color="dark">{{song.album}}</ion-label>
-            <ion-label color="dark">{{song.artist}}</ion-label>
-            <ion-label color="dark">{{song.size}}</ion-label>
-            <ion-label color="dark">{{song.duration}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{song.album}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{song.artist}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{song.size}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{song.duration}}</ion-label>
         </ion-item>
         <ion-item-options side="start">
             <ion-button (click)="deleteSong(song.id)"><ion-icon name="trash"></ion-icon></ion-button>

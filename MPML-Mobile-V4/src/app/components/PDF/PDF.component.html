@@ -10,9 +10,9 @@
     <ion-item *ngIf="PDFs==null"><ion-button  slot="end"shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
     <ion-item>
         <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
-        <ion-label color="primary" (click)="sortItems('author')">Author</ion-label>
-        <ion-label color="primary" (click)="sortItems('date')">Date Added</ion-label>
-        <ion-label color="primary" (click)="sortItems('size')">Size</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('author')">Author</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('date')">Date Added</ion-label>
+        <ion-label hideWhen="portrait" color="primary" (click)="sortItems('size')">Size</ion-label>
     </ion-item>
     <ion-item *ngIf="shareDisplay">
         <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
@@ -21,9 +21,9 @@
     <ion-item-sliding *ngFor="let PDF of PDFs;let i = index;">
         <ion-item (click)="openItem(PDF)">
             <ion-label class="title" color="dark">{{PDF.name}}</ion-label>
-            <ion-label color="dark">{{PDF.author}}</ion-label>
-            <ion-label color="dark">{{PDF.date}}</ion-label>
-            <ion-label color="dark">{{PDF.size}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{PDF.author}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{PDF.date}}</ion-label>
+            <ion-label hideWhen="portrait" color="dark">{{PDF.size}}</ion-label>
         </ion-item>
         <ion-item-options side="start">
             <ion-button (click)="deletePDF(PDF.id)"><ion-icon name="trash"></ion-icon></ion-button>
