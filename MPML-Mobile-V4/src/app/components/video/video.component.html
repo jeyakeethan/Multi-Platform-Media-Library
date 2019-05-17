@@ -1,4 +1,4 @@
-<ion-content> 
+
     <ion-item class="Search"><ion-searchbar type="Search" [(ngModel)] = "searchTerm" (ionChange)="setFilteredItems()" (ionCancel)="cancelSearch()" autocomplete ="on"></ion-searchbar></ion-item>
     <!--div *ngIf="display" class="display" autoplay="true" id="aPlayer" #musicplayer>
         <ion-item class="ionaudioplayer"><audio class="audioplayer" src="{{songPlaying}}" autoplay="true" controls="controls" #audioplayer></audio></ion-item>
@@ -18,11 +18,12 @@
             <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
             <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
         </ion-item>
+        
         <ion-grid>
-            <ion-row class="ion-align-items-start">
+            <ion-row class="ion-justify-content-start">
                 <ion-col *ngFor="let video of videos; let i = index;">
-                    <div class="video-class"(click)="openItem(video)">
-                        <div class="details"><ion-label text-wrap>{{video.name}}</ion-label></div>
+                    <div class="video-class"(click)="openItem(video)" [ngStyle]="{'background-image': 'url( https://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/thumpnails/'+video.id+'.jpg)'}">
+                        <div class="details title"><ion-label text-wrap>{{video.name}}</ion-label></div>
                         <div class="details"><ion-label text-wrap>{{video.date}}</ion-label></div>
                         <div class="details"><ion-label text-wrap>Time: {{parseDuration(video.duration)}}, Size: {{video.size}}KB</ion-label></div>
                     </div>
@@ -48,5 +49,3 @@
     <!--ion-item>
         <ion-label>{{Notice}}</ion-label>
     </ion-item-->
-    </ion-content>
-    

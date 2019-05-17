@@ -64,13 +64,13 @@ export class VideoComponent{
   public openItem($item){
     let available = this.fs.openFile(0, $item.name);
     if(!available){
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+$item.id+".mp4",'_system','location=yes');
     }
     /*if($item.available){
      this.fs.openFile(0, $item.name);
     }
     else{
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Videos/"+$item.id+".mp4",'_system','location=yes');
+      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+$item.id+".mp4",'_system','location=yes');
     }*/
   }
 
@@ -127,6 +127,6 @@ public parseDuration(sec_num:number):String{
     if (minutes < 10) {m = "0"+m;}
     if (seconds < 10) {s = "0"+s;}
     let h1 = h == "00"?"":h+":";
-    return h1 +':'+m+':'+s;
+    return h1 +m+':'+s;
 }
 }
