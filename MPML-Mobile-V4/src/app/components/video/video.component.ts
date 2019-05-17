@@ -29,7 +29,6 @@ export class VideoComponent{
   }
   onInit(){
     this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
-    this.videos = this.videosRetrieved;
     this.platform.ready().then(()=>{
       this.videosRetrieved.forEach(element => {
         element.available=this.fs.checkFile(0,element.name);
@@ -57,8 +56,11 @@ export class VideoComponent{
   }
 
   public async deleteVideo(index:number){
-    this.videos.splice(index, 1);
-    this.fs.deleteFile(0,index);
+    var result = confirm("Want to delete?");
+    if (result) {
+      this.videos.splice(index, 1);
+      this.fs.deleteFile(0,index);
+    }
   }
 
   public openItem($item){
@@ -103,7 +105,7 @@ export class VideoComponent{
       break;
     }
   }
-  public reload(){
+  public async reload(){
     this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
     this.videos = this.videosRetrieved;
   }

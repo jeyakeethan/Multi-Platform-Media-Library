@@ -1,6 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import {FsService, User} from "../service/fs.service";
 import { NavController } from '@ionic/angular';
+import {SongComponent} from '../components/song/song.component';
+import {VideoComponent} from '../components/video/video.component';
+import {PDFComponent} from '../components/pdf/PDF.component';
 @Component({
   selector: 'app-tab4',
   templateUrl: 'tab4.page.html',

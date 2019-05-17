@@ -57,8 +57,11 @@ export class PDFComponent{
     }
 
     public async deletePDF(index:number){
-      this.PDFs.splice(index, 1);
-      this.fs.deleteFile(0,index);
+      var result = confirm("Want to delete?");
+      if (result) {
+        this.PDFs.splice(index, 1);
+        this.fs.deleteFile(0,index);
+      }
     }
 
     public openItem($item){

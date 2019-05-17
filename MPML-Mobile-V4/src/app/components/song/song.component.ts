@@ -58,9 +58,11 @@ export class SongComponent{
     }
 
     public async deleteSong(index:number){
-      this.songs.splice(index, 1);
-      this.fs.deleteFile(0,index);
-      await this.dynamiclist.closeSlidingItems();
+      var result = confirm("Want to delete?");
+      if (result) {
+        this.songs.splice(index, 1);
+        this.fs.deleteFile(0,index);
+      }
     }
 
     public openItem($item){

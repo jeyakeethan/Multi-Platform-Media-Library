@@ -1,22 +1,24 @@
 <ion-content>
-    <ion-item class="Search"><ion-searchbar type="Search" [(ngModel)] = "searchTerm" (ionChange)="setFilteredItems()" (ionCancel)="cancelSearch()" autocomplete ="on"></ion-searchbar></ion-item>
+    <ion-item class="Search">
+        <ion-searchbar type="Search" [(ngModel)] = "searchTerm" (ionChange)="setFilteredItems()" (ionCancel)="cancelSearch()" autocomplete ="on"></ion-searchbar>
+        <ion-button (click)="reload()" *ngIf="PDFs==null" slot="end"shape="round" fill="outline">Reload</ion-button>
+    </ion-item>
     <!--div *ngIf="display" class="display" autoplay="true" id="aPlayer" #musicplayer>
         <ion-item class="ionaudioplayer"><audio class="audioplayer" src="{{songPlaying}}" autoplay="true" controls="controls" #audioplayer></audio></ion-item>
     </div-->
     <div *ngIf="searching" class="spinner-container">
         <ion-spinner></ion-spinner>
     </div> 
+    <ion-item *ngIf="shareDisplay">
+        <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
+        <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+    </ion-item>
   <ion-list class="list">
-    <ion-item *ngIf="PDFs==null"><ion-button  slot="end"shape="round" fill="outline" (click)="reload()">Reload</ion-button></ion-item>
     <ion-item>
         <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
         <ion-label hideWhen="portrait" color="primary" (click)="sortItems('author')">Author</ion-label>
         <ion-label hideWhen="portrait" color="primary" (click)="sortItems('date')">Date Added</ion-label>
         <ion-label hideWhen="portrait" color="primary" (click)="sortItems('size')">Size</ion-label>
-    </ion-item>
-    <ion-item *ngIf="shareDisplay">
-        <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
-        <ion-button  slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
     </ion-item>
     <ion-item-sliding *ngFor="let PDF of PDFs;let i = index;">
         <ion-item (click)="openItem(PDF)">
