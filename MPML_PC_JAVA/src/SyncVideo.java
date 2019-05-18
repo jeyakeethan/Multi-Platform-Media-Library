@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SyncVideo extends Thread {
     private static String UPLOAD_URL = "https://medialibraryweb.000webhostapp.com/upload.php";
@@ -54,6 +56,7 @@ public class SyncVideo extends Thread {
         if (temp.size() != 0) {
             deleteCheckServer(temp);
         }
+        uploadPendingFiles();
     }
 
     public void newfileCheckLocal() {
@@ -139,6 +142,17 @@ public class SyncVideo extends Thread {
         return 0;
     }
 
+
+    public synchronized void uploadPendingFiles(){
+        HashMap<Integer,String> missedSongs = this.dbConnection.getMissedFiles("movies");
+        for (Map.Entry<Integer, String> item : missedSongs.entrySet()) {
+            Integer id = item.getKey();
+            String value = item.getValue();
+            try{
+                this.uploadFile(UPLOAD_URL, URLFormater(this.videos.get(this.videosOnDirectory.indexOf(value)).getPath()), 1, id);
+            }catch (Exception e){}
+        }
+    }
     public String URLFormater(String url) {
         return url.replace('\\', '/');
     }

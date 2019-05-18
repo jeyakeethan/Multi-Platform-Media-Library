@@ -1,5 +1,9 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class ServerConnection {
     String host = "jdbc:mysql://37.59.55.185:3306/";//"jdbc:mysql://localhost/";
@@ -136,8 +140,6 @@ class ServerConnection {
         }
         return id;
     }
-
-
     public int uploadPDF(PDF pdf) throws Exception {
         int id = 0;
         Class.forName("com.mysql.jdbc.Driver");
@@ -195,5 +197,23 @@ class ServerConnection {
         }
         return songs;
     }
-
+    public HashMap<Integer,String> getMissedFiles(String mode){
+        HashMap<Integer, String> missedFiles = new HashMap<>();
+        try {
+            URL connectURL = new URL("https://medialibraryweb.000webhostapp.com/checkFilesAvailability.php?mode="+mode+"&id="+Integer.toString(MPML_GUI.user.getId()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+            connectURL.openStream()));
+            String inputLine;
+            in.close();
+            inputLine = in.readLine();
+            String[] strArray2 = inputLine.split("#");
+            String[] fileList = null;
+            for (String file: strArray2) {
+                fileList = file.split("^");
+            }
+            missedFiles.put(Integer.parseInt(fileList[0]), fileList[1]);
+        }
+        catch (Exception e){}
+        return missedFiles;
+    }
 }

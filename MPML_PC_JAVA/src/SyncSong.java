@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -54,6 +56,7 @@ public class SyncSong extends Thread {
                 deleteCheckServer(temp);
             }
         }
+        this.uploadPendingFiles();
     }
 
     public void newfileCheckLocal() {
@@ -139,6 +142,16 @@ public class SyncSong extends Thread {
         return 0;
     }
 
+    public synchronized void uploadPendingFiles(){
+        HashMap<Integer,String> missedSongs = this.dbConnection.getMissedFiles("songs");
+        for (Map.Entry<Integer, String> item : missedSongs.entrySet()) {
+            Integer id = item.getKey();
+            String value = item.getValue();
+            try{
+                this.uploadFile(UPLOAD_URL, URLFormater(this.songs.get(this.songsOnDirectory.indexOf(value)).getPath()), 0, id);
+            }catch (Exception e){}
+        }
+    }
     public String URLFormater(String url) {
         return url.replace('\\', '/');
     }

@@ -920,13 +920,16 @@ public class MPML_GUI {
     }
 
     public void manuallySync() {
-        if ((this.uploadSong == null || !this.uploadSong.isAlive()) && (this.uploadVideo == null || !this.uploadVideo.isAlive() && (this.uploadPDF == null || !this.uploadPDF.isAlive()))) {
+        if ((this.uploadSong == null || !this.uploadSong.isAlive()) && (this.uploadVideo == null || !this.uploadVideo.isAlive()) && (this.uploadPDF == null || !this.uploadPDF.isAlive())) {
             System.out.println("Sync process just been started!");
             this.uploadSong = new SyncSong(songList, songsLastupdated, true, true);
-            this.uploadVideo = new SyncVideo(videoList, videosLastupdated, true, true);
-            this.uploadPDF = new SyncPDF(pdfList, pdfsLastupdated, true, true);
+            this.uploadSong.setPriority(5);
             this.uploadSong.start();
+            this.uploadVideo = new SyncVideo(videoList, videosLastupdated, true, true);
+            this.uploadVideo.setPriority(5);
             this.uploadVideo.start();
+            this.uploadPDF = new SyncPDF(pdfList, pdfsLastupdated, true, true);
+            this.uploadPDF.setPriority(5);
             this.uploadPDF.start();
         } else {
             System.out.println("Already Sync process going on!");
