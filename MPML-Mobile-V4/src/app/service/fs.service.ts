@@ -174,7 +174,6 @@ export class FsService {
     const fileTransfer: FileTransferObject = this.transfer.create();
     switch(mode){
       case 0:
-      //this.fileOpener.open(id, 'audio/mpeg3');
         this.file.createDir(this.file.externalRootDirectory, "MediaLibrary",false);
         this.file.createDir(this.file.externalRootDirectory+"MediaLibrary", "Songs",false);
         let path =  this.file.externalRootDirectory+'MediaLibrary/Songs/'+name+".mp3";
@@ -183,15 +182,6 @@ export class FsService {
           console.log('download complete: ' + entry.toURL());
           alert("Song has been downloaded!");
         });
-        /*this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/Songs/'+id+'.mp3').then((fileAvailable)=>{
-          if(!fileAvailable){
-            let path =  this.file.tempDirectory+'MediaLibrary/songs';
-            const url = "https://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+id+".mp3";
-            fileTransfer.download(url, path).then((entry) => {
-              console.log('download complete: ' + entry.toURL());
-            });
-          }
-        });*/
       break;
       case 1:
         this.file.createDir(this.file.externalRootDirectory, "MediaLibrary",false);
@@ -200,6 +190,7 @@ export class FsService {
         const url1 = "https://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+id+".mp4";
         fileTransfer.download(url1, path1).then((entry) => {
           console.log('download complete: ' + entry.toURL());
+          alert("Video has been downloaded!");
         });
       break;
       case 2:
@@ -209,12 +200,12 @@ export class FsService {
         const url2 = "https://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+id+".pdf";
         fileTransfer.download(url2, path2).then((entry) => {
           console.log('download complete: ' + entry.toURL());
+          alert("PDF has been downloaded!");
         });
       break;
     }
   }
   deleteFileServer(mode:number,id:number){
-    //this.httpClient.get<any>('https://medialibraryweb.000webhostapp.com/manage_data.php?mode='+mode+'&id='+id).subscribe();
     let url ="https://medialibraryweb.000webhostapp.com/manage_data.php";
     let  params = {id:id.toString(),mode:mode.toString(),key:'delete'};
     console.log(params);
@@ -264,9 +255,6 @@ export class FsService {
     }
   }
   public login(name:string, pass:string):boolean{
-    /*this.httpClient.get<any>('https://medialibraryweb.000webhostapp.com/retrive_data.php?username='+name+'&password='+pass)
-    .toPromise()
-    .then(res => <User[]> res.data)*/
     const params = {username:name,password:pass};
     this.httpClient.post("https://medialibraryweb.000webhostapp.com/login.php",JSON.stringify(params)).toPromise().then(res =>  <User>res.valueOf()['data'][0]).then(data => FsService.user=data);
     this.storage.set("user",FsService.user)

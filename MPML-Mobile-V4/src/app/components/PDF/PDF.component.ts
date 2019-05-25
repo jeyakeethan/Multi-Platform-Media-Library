@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-//import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { FsService } from 'src/app/service/fs.service';
 
 export class PDF{
@@ -22,7 +21,7 @@ export class PDFComponent{
     PDFsRetrieved :PDF[];
     sharedId:string;
     selectedPDFToShare:PDF;
-    songPlaying:string;
+    pdfPlaying:string;
     public searching: Boolean = false;
     public searchTerm:string = "";
     constructor(private platform: Platform, private fs:FsService){
@@ -30,12 +29,11 @@ export class PDFComponent{
     onInit(){
       this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
       this.PDFs = this.PDFsRetrieved;
-      this.platform.ready().then(()=>{
+      /*this.platform.ready().then(()=>{
         this.PDFsRetrieved.forEach(element => {
-          element.available=this.fs.checkFile(0,element.name);
+          element.available=this.fs.checkFile(2,element.name);
         });
-        this.PDFs = this.PDFsRetrieved;
-      });
+      });*/
     }
 
     public cancelSearch(){
@@ -49,37 +47,31 @@ export class PDFComponent{
       }
       else{
         var key = this.searchTerm.toLowerCase();
-        this.PDFs = this.PDFsRetrieved.filter(song => {
-          return String(song.name).toLowerCase().startsWith(key);
+        this.PDFs = this.PDFsRetrieved.filter(pdf => {
+          return String(pdf.name).toLowerCase().startsWith(key);
         });
       }
       this.searching = false;
     }
 
     public async deletePDF(index:number){
-      var result = confirm("Want to delete?");
-      if (result) {
+      //var result = confirm("Want to delete?");
+      //if (result) {
         this.PDFs.splice(index, 1);
-        this.fs.deleteFile(0,index);
-      }
+        this.fs.deleteFile(2,index);
+      //}
     }
 
     public openItem($item){
-      let available = this.fs.openFile(0, $item.name);
+      let available = this.fs.openFile(2, $item.name);
       if(!available){
         window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
       }
-      /*if($item.available){
-       this.fs.openFile(0, $item.name);
-      }
-      else{
-        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
-      }*/
     }
 
-    public downloadPDF($song){
+    public downloadPDF($pdf){
       this.platform.ready().then(()=>{
-        this.fs.downloadFile(0,$song.id,$song.name);
+        this.fs.downloadFile(2,$pdf.id,$pdf.name);
       })
     }
 
@@ -107,6 +99,21 @@ export class PDFComponent{
       break;
     }
   }
+  
+  public reload(){
+    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+    this.PDFs = this.PDFsRetrieved;
+  }
+public ionViewDidEnter(): void {
+  if(this.PDFs==null){
+    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+    this.PDFs = this.PDFsRetrieved;
+  }
+}
+public share(){
+  this.fs.share(2,this.selectedPDFToShare.id,this.sharedId);
+}
+} 
   /*public login() {
     if(this.username!=""&&this.password!=""){
       let success = this.fs.login(this.username, this.password);
@@ -122,18 +129,3 @@ export class PDFComponent{
       }
     }
   }*/
-  
-  public reload(){
-    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
-    this.PDFs = this.PDFsRetrieved;
-  }
-public ionViewDidEnter(): void {
-  if(this.PDFs==null){
-    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
-    this.PDFs = this.PDFsRetrieved;
-  }
-}
-public share(){
-  this.fs.share(0,this.selectedPDFToShare.id,this.sharedId);
-}
-} 

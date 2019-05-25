@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-//import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { FsService } from 'src/app/service/fs.service';
 
 export class Video{
@@ -29,12 +28,12 @@ export class VideoComponent{
   }
   onInit(){
     this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
-    this.platform.ready().then(()=>{
+    this.videos = this.videosRetrieved;
+    /*this.platform.ready().then(()=>{
       this.videosRetrieved.forEach(element => {
-        element.available=this.fs.checkFile(0,element.name);
+        element.available=this.fs.checkFile(1,element.name);
       });
-      this.videos = this.videosRetrieved;
-    });
+    });*/
   }
 
   public cancelSearch(){
@@ -56,29 +55,23 @@ export class VideoComponent{
   }
 
   public async deleteVideo(index:number){
-    var result = confirm("Want to delete?");
-    if (result) {
+    //var result = confirm("Want to delete?");
+    //if (result) {
       this.videos.splice(index, 1);
-      this.fs.deleteFile(0,index);
-    }
+      this.fs.deleteFile(1,index);
+    //}
   }
 
   public openItem($item){
-    let available = this.fs.openFile(0, $item.name);
+    let available = this.fs.openFile(1, $item.name);
     if(!available){
       window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+$item.id+".mp4",'_system','location=yes');
     }
-    /*if($item.available){
-     this.fs.openFile(0, $item.name);
-    }
-    else{
-      window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+$item.id+".mp4",'_system','location=yes');
-    }*/
   }
 
   public downloadVideo($video){
     this.platform.ready().then(()=>{
-      this.fs.downloadFile(0,$video.id,$video.name);
+      this.fs.downloadFile(1,$video.id,$video.name);
     })
   }
   sortItems(tag){
@@ -109,14 +102,14 @@ export class VideoComponent{
     this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
     this.videos = this.videosRetrieved;
   }
-public ionViewDidEnter(): void {
+public ionViewDidLoad(): void {
   if(this.videos==null){
     this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
     this.videos = this.videosRetrieved;
   }
 }
 public share(){
-  this.fs.share(0,this.selectedVideoToShare.id,this.sharedId);
+  this.fs.share(1,this.selectedVideoToShare.id,this.sharedId);
 }
 public parseDuration(sec_num:number):String{
     var hours   = Math.floor(sec_num / 3600);

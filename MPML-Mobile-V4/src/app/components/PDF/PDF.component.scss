@@ -1,7 +1,16 @@
 .title{
     min-width: 30%;
+    font-weight: bolder;
 }
-
-.list{
-    height: auto;
+.searchbar{
+    min-width: 70%;
+}
+@media only screen and (orientation: portrait) {
+    .details{
+        visibility: hidden;
+    }
+    .title{  
+        min-width: 70%;
+        font-weight: bolder;
+    }
 }

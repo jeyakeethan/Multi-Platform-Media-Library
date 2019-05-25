@@ -1,10 +1,8 @@
 .title{
     min-width: 30%;
+    font-weight: bolder;
 }
 
-.list{
-    height: auto;
-}
 .video-class{
     position: relative;
     width: 250px;
@@ -35,9 +33,13 @@
     opacity: 0.7;
     font-weight: 100;
 }
-.title{
-    font-weight: bolder;
-}
+
 ion-label{
     opacity: 1;
+}
+.searchbar{
+    min-width: 70%;
+}
+@media only screen and (orientation: portrait) {
+    
 }

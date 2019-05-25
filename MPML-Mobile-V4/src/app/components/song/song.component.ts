@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform,IonList } from '@ionic/angular';
-//import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { Platform,IonList,AlertController  } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 export class Song{
   constructor(public name?, public album?, public artist?, public duration?, public size?,public id?, public available?:boolean){
@@ -15,10 +14,9 @@ export class Song{
   providers:[FsService,]
 })
 
-export class SongComponent{
+export class SongComponent implements OnInit{
     username:string;
     password:string;
-    @ViewChild('dynamicList') dynamiclist:IonList;
     songs :Song[];
     songsRetrieved :Song[];
     sharedId:string;
@@ -26,17 +24,18 @@ export class SongComponent{
     songPlaying:string;
     public searching: Boolean = false;
     public searchTerm:string = "";
-    constructor(private platform: Platform, private fs:FsService){
+    constructor(private platform: Platform, private fs:FsService, private alertController :AlertController ){
     }
-    onInit(){
+    
+    ngOnInit():void{
       this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
       this.songs = this.songsRetrieved;
-      this.platform.ready().then(()=>{
+      /*this.platform.ready().then(()=>{
         this.songsRetrieved.forEach(element => {
           element.available=this.fs.checkFile(0,element.name);
         });
-        this.songs = this.songsRetrieved;
-      });
+      });*/
+      this.songs = this.songsRetrieved;
     }
 
     public cancelSearch(){
@@ -46,7 +45,7 @@ export class SongComponent{
     public setFilteredItems(){
       this.searching = true;
       if(this.searchTerm==""){
-        this.songs = this.songsRetrieved;
+        this.songs = this.songsRetrieved; 
       }
       else{
         var key = this.searchTerm.toLowerCase();
@@ -58,7 +57,7 @@ export class SongComponent{
     }
 
     public async deleteSong(index:number){
-      var result = confirm("Want to delete?");
+      var result = this.presentAlert();
       if (result) {
         this.songs.splice(index, 1);
         this.fs.deleteFile(0,index);
@@ -70,12 +69,6 @@ export class SongComponent{
       if(!available){
         window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+$item.id+".mp3",'_system','location=yes');
       }
-      /*if($item.available){
-       this.fs.openFile(0, $item.name);
-      }
-      else{
-        window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+$item.id+".mp3",'_system','location=yes');
-      }*/
     }
 
     public downloadSong($song){
@@ -116,6 +109,11 @@ export class SongComponent{
     public reload(){
       this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
       this.songs = this.songsRetrieved;
+      /*this.platform.ready().then(()=>{
+        this.songsRetrieved.forEach(element => {
+          element.available=this.fs.checkFile(0,element.name);
+        });
+      });*/
     }
   public ionViewDidEnter(): void {
     if(this.songs==null){
@@ -125,5 +123,31 @@ export class SongComponent{
   }
   public share(){
     this.fs.share(0,this.selectedSongToShare.id,this.sharedId);
+  }
+  public async presentAlert() {
+    var yes = false;
+    const alert = await this.alertController.create({
+      header: 'Warning!',
+      subHeader: 'Do you want to delete?',
+      message: '',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: () => {
+            yes = true;
+            console.log('Confirm Ok');
+          }
+        }
+      ]
+    });
+    alert.present();
+    return yes; 
   }
 }
