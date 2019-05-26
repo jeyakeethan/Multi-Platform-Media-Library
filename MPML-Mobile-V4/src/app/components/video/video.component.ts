@@ -99,8 +99,12 @@ export class VideoComponent{
     }
   }
   public async reload(){
-    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
-    this.videos = this.videosRetrieved;
+    if(FsService.user!=null){
+      this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+      this.videos = this.videosRetrieved;
+    }else{
+      alert("Go to Setting tab and login First!");
+    }
   }
 public ionViewDidLoad(): void {
   if(this.videos==null){

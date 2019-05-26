@@ -107,8 +107,12 @@ export class SongComponent implements OnInit{
       }
     }
     public reload(){
-      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
-      this.songs = this.songsRetrieved;
+      if(FsService.user!=null){
+        this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+        this.songs = this.songsRetrieved;
+      }else{
+        alert("Go to Setting tab and login First!");
+      }
       /*this.platform.ready().then(()=>{
         this.songsRetrieved.forEach(element => {
           element.available=this.fs.checkFile(0,element.name);

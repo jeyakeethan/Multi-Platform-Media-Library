@@ -101,8 +101,12 @@ export class PDFComponent{
   }
   
   public reload(){
-    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
-    this.PDFs = this.PDFsRetrieved;
+    if(FsService.user!=null){
+      this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+      this.PDFs = this.PDFsRetrieved;
+    }else{
+      alert("Go to Setting tab and login First!");
+    }
   }
 public ionViewDidEnter(): void {
   if(this.PDFs==null){

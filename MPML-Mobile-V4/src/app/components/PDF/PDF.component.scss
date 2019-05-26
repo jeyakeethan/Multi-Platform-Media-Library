@@ -1,3 +1,6 @@
+ion-item{
+    width:100%;
+}
 .title{
     min-width: 30%;
     font-weight: bolder;
@@ -5,12 +8,21 @@
 .searchbar{
     min-width: 70%;
 }
+.reload{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin: -30px 0 0 -80px;
+}
 @media only screen and (orientation: portrait) {
     .details{
         visibility: hidden;
     }
+    .detailsHide{
+        width: 30%;
+    }
     .title{  
-        min-width: 70%;
+        width:70%;
         font-weight: bolder;
     }
 }

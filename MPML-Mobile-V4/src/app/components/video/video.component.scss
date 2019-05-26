@@ -1,3 +1,6 @@
+ion-item{
+    width:100%;
+}
 .title{
     min-width: 30%;
     font-weight: bolder;
@@ -7,7 +10,6 @@
     position: relative;
     width: 250px;
     height: 250px;
-    padding: 10px;
     border: 2px solid rgb(1, 126, 243);
     margin: 3;
     background-color: rgba($color: #0856fd, $alpha: 0.5)
@@ -17,14 +19,18 @@
     width: 253px;
     opacity: 0.75;
     height: 253px;
-    padding: 11px;
     border: 5px solid rgb(243, 1, 122);
     margin: 3;
 }
-.container{
+.containerOptions{
     position: absolute;
     left: 40px;
     bottom:0;
+}
+.container{
+    position: absolute;
+    top:5px;
+    left:5px;
 }
 .details{
     background-color: rgb(204, 232, 252);
@@ -32,13 +38,22 @@
     padding: 3px;
     opacity: 0.7;
     font-weight: 100;
+    width: 234px;
 }
-
+ion-img{
+    margin: 0;
+}
 ion-label{
     opacity: 1;
 }
 .searchbar{
     min-width: 70%;
+}
+.reload{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin: -30px 0 0 -80px;
 }
 @media only screen and (orientation: portrait) {
     
