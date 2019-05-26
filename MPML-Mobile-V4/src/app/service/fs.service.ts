@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
-import { Http } from '@angular/http';
 import {Song} from '../components/song/song.component';
 import {Video} from '../components/video/video.component';
 import { PDF } from '../components/pdf/pdf.component';
 import { File } from '@ionic-native/file/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
-import { pathToFileURL, fileURLToPath, resolve } from 'url';
 import { Storage } from '@ionic/storage';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer, //FileUploadOptions,
+  FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { Platform } from '@ionic/angular';
 
 export class User{
   constructor(public name?, public id?){
@@ -18,11 +17,14 @@ export class User{
 @Injectable()
 export class FsService {
   static user:User;
-  constructor(private httpClient:HttpClient,private file: File, private filePath:FilePath, private fileOpener:FileOpener, private storage:Storage,private transfer: FileTransfer) {
+  constructor(private plateform:Platform, private httpClient:HttpClient,private file: File, private fileOpener:FileOpener, private storage:Storage,private transfer: FileTransfer) {
+    this.plateform.ready().then(()=>{
+
     this.restoreUser();
+    });
   }
   public async restoreUser(){
-    this.storage.get("user").then((user)=>{FsService.user=user;});
+    await this.storage.get("user").then((user)=>{FsService.user=user;});
   }
   public getSongs(){
     let songs;
@@ -254,9 +256,9 @@ export class FsService {
       break;
     }
   }
-  public login(name:string, pass:string):boolean{
+  public async login(name:string, pass:string){
     const params = {username:name,password:pass};
-    this.httpClient.post("https://medialibraryweb.000webhostapp.com/login.php",JSON.stringify(params)).toPromise().then(res =>  <User>res.valueOf()['data'][0]).then(data => FsService.user=data);
+    await this.httpClient.post("https://medialibraryweb.000webhostapp.com/login.php",JSON.stringify(params)).toPromise().then(res =>  <User>res.valueOf()['data'][0]).then(data => FsService.user=data);
     this.storage.set("user",FsService.user)
     return (FsService.user.name==name);
   }

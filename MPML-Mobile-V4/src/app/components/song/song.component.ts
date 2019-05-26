@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform,IonList,AlertController  } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { Platform,AlertController  } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 export class Song{
   constructor(public name?, public album?, public artist?, public duration?, public size?,public id?, public available?:boolean){
@@ -27,15 +27,14 @@ export class SongComponent implements OnInit{
     constructor(private platform: Platform, private fs:FsService, private alertController :AlertController ){
     }
     
-    ngOnInit():void{
-      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
-      this.songs = this.songsRetrieved;
-      /*this.platform.ready().then(()=>{
-        this.songsRetrieved.forEach(element => {
+    async ngOnInit(){
+      await this.delay(700);
+      this.platform.ready().then(()=>{
+        this.reload();
+          /*this.songsRetrieved.forEach(element => {
           element.available=this.fs.checkFile(0,element.name);
-        });
-      });*/
-      this.songs = this.songsRetrieved;
+        });*/
+      });
     }
 
     public cancelSearch(){
@@ -59,13 +58,17 @@ export class SongComponent implements OnInit{
     public async deleteSong(index:number){
       var result = this.presentAlert();
       if (result) {
-        this.songs.splice(index, 1);
+        await this.songs.splice(index, 1);
         this.fs.deleteFile(0,index);
       }
+      confirm("deleted");
     }
 
     public openItem($item){
-      let available = this.fs.openFile(0, $item.name);
+      let available = false;
+      if(this.platform.is("android")){
+        available = <boolean>this.fs.openFile(0, $item.name);
+      }
       if(!available){
         window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Songs/"+$item.id+".mp3",'_system','location=yes');
       }
@@ -106,9 +109,10 @@ export class SongComponent implements OnInit{
         break;
       }
     }
-    public reload(){
+    public async reload(){
+      console.log("Hello wrks");
       if(FsService.user!=null){
-        this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+        await this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
         this.songs = this.songsRetrieved;
       }else{
         alert("Go to Setting tab and login First!");
@@ -119,9 +123,9 @@ export class SongComponent implements OnInit{
         });
       });*/
     }
-  public ionViewDidEnter(): void {
+  public async ionViewDidEnter() {
     if(this.songs==null){
-      this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
+      await this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
       this.songs = this.songsRetrieved;
     }
   }
@@ -151,7 +155,10 @@ export class SongComponent implements OnInit{
         }
       ]
     });
-    alert.present();
+    await alert.present();
     return yes; 
+  }
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 }

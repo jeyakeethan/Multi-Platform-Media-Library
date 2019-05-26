@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 
@@ -14,7 +14,7 @@ export class PDF{
   providers:[FsService,]
 })
 
-export class PDFComponent{
+export class PDFComponent implements OnInit{
     username:string;
     password:string;
     PDFs :PDF[];
@@ -26,14 +26,16 @@ export class PDFComponent{
     public searchTerm:string = "";
     constructor(private platform: Platform, private fs:FsService){
     }
-    onInit(){
-      this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
-      this.PDFs = this.PDFsRetrieved;
+    async ngOnInit(){
+      await this.delay(300);
+      this.platform.ready().then(()=>{
+        this.reload();
       /*this.platform.ready().then(()=>{
         this.PDFsRetrieved.forEach(element => {
           element.available=this.fs.checkFile(2,element.name);
         });
       });*/
+      });
     }
 
     public cancelSearch(){
@@ -63,7 +65,10 @@ export class PDFComponent{
     }
 
     public openItem($item){
-      let available = this.fs.openFile(2, $item.name);
+      let available = false;
+      if(this.platform.is("android")){
+        available = <boolean>this.fs.openFile(2, $item.name);
+      }
       if(!available){
         window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+$item.id+".pdf",'_system','location=yes');
       }
@@ -100,22 +105,25 @@ export class PDFComponent{
     }
   }
   
-  public reload(){
+  public async reload(){
     if(FsService.user!=null){
-      this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+      await this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
       this.PDFs = this.PDFsRetrieved;
     }else{
       alert("Go to Setting tab and login First!");
     }
   }
-public ionViewDidEnter(): void {
+public async ionViewDidEnter() {
   if(this.PDFs==null){
-    this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
+    await this.fs.loadPDFsFromServer().then(PDFs=>this.PDFsRetrieved=PDFs);
     this.PDFs = this.PDFsRetrieved;
   }
 }
 public share(){
   this.fs.share(2,this.selectedPDFToShare.id,this.sharedId);
+}
+delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
 }
 } 
   /*public login() {

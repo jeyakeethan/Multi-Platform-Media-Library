@@ -17,7 +17,7 @@
 <ion-item color="light">
     <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
     <ion-label class="details" color="primary" (click)="sortItems('author')">Author</ion-label>
-    <ion-label color="primary" (click)="sortItems('date')">Date Added</ion-label>
+    <ion-label class="detailsHide" color="primary" (click)="sortItems('date')">Date Added</ion-label>
     <ion-label class="details" color="primary" (click)="sortItems('size')">Size</ion-label>
 </ion-item>
 <div class="reload" *ngIf="PDFs==null">

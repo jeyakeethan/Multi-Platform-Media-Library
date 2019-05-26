@@ -32,7 +32,7 @@
             <ion-label class="details" color="dark">{{song.album}}</ion-label>
             <ion-label class="details" color="dark">{{song.artist}}</ion-label>
             <ion-label class="details" color="dark">{{song.size}}</ion-label>
-            <ion-label color="dark">{{song.duration}}</ion-label>
+            <ion-label class="detailsHide" color="dark">{{song.duration}}</ion-label>
         </ion-item>
         <ion-item-options side="start">
             <ion-button (click)="deleteSong(song.id)"><ion-icon name="trash"></ion-icon></ion-button>

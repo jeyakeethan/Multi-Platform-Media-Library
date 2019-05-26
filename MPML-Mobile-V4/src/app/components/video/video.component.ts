@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { FsService } from 'src/app/service/fs.service';
 
@@ -14,7 +14,7 @@ export class Video{
   providers:[FsService,]
 })
 
-export class VideoComponent{
+export class VideoComponent implements OnInit{
   username:string;
   password:string;
   videos :Video[];
@@ -26,14 +26,17 @@ export class VideoComponent{
   public searchTerm:string = "";
   constructor(private platform: Platform, private fs:FsService){
   }
-  onInit(){
-    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
-    this.videos = this.videosRetrieved;
+  async ngOnInit(){
+    await this.delay(300);
+    this.platform.ready().then(()=>{
+      this.reload();
+
     /*this.platform.ready().then(()=>{
       this.videosRetrieved.forEach(element => {
         element.available=this.fs.checkFile(1,element.name);
       });
-    });*/
+    });*/    
+    });
   }
 
   public cancelSearch(){
@@ -63,7 +66,10 @@ export class VideoComponent{
   }
 
   public openItem($item){
-    let available = this.fs.openFile(1, $item.name);
+    let available = false;
+    if(this.platform.is("android")){
+      available = <boolean>this.fs.openFile(1, $item.name);
+    }
     if(!available){
       window.open("http://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+$item.id+".mp4",'_system','location=yes');
     }
@@ -100,15 +106,15 @@ export class VideoComponent{
   }
   public async reload(){
     if(FsService.user!=null){
-      this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+      await this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
       this.videos = this.videosRetrieved;
     }else{
       alert("Go to Setting tab and login First!");
     }
   }
-public ionViewDidLoad(): void {
+public async ionViewDidLoad() {
   if(this.videos==null){
-    this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
+    await this.fs.loadMoviesFromServer().then(videos=>this.videosRetrieved=videos);
     this.videos = this.videosRetrieved;
   }
 }
@@ -127,5 +133,8 @@ public parseDuration(sec_num:number):String{
     if (seconds < 10) {s = "0"+s;}
     let h1 = h == "00"?"":h+":";
     return h1 +m+':'+s;
+}
+delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
 }
 }

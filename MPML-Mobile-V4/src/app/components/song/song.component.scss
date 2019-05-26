@@ -19,19 +19,20 @@ ion-item{
 }
 .reload{
     position: absolute;
-    top: 60%;
+    top: 400px;
+    height:100px;
     left: 50%;
-    margin: -30px 0 0 -80px;
+    margin: 0 0 0 -80px;
 }
 @media only screen and (orientation: portrait) {
     .details{
         visibility: hidden;
     }
     .detailsHide{
-        width: 30%;
+        min-width: 35%;
     }
     .title{  
-        width:70%;
+        width:65%;
         font-weight: bolder;
     }
 }
