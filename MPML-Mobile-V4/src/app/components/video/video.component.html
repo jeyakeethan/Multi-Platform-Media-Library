@@ -20,14 +20,16 @@
         <ion-label color="primary" (click)="sortItems('duration')">Duration</ion-label>
         <ion-label color="primary" (click)="sortItems('size')">Size</ion-label>
     </ion-item>   
-    <div class="reload" *ngIf="videos==null">
-        <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
-            <ion-icon name="refresh"></ion-icon> Refresh
-        </ion-button>
+    <div class="row reload" *ngIf="videos==null">
+        <div class="col" >
+            <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
+                <ion-icon name="refresh"></ion-icon> Refresh
+            </ion-button>
+        </div>
     </div>
     <ion-grid>
-        <ion-row class="ion-justify-content-start" *ngFor="let video of videos; let i = index;">
-            <ion-col>
+        <ion-row class="ion-justify-content-start">
+            <ion-col *ngFor="let video of videos; let i = index;">
                 <div class="video-class">
                     <ion-img (click)="openItem(video)" [src]="'https://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/thumpnails/'+video.id+'.jpg'"></ion-img>
                     <div class="container">
@@ -37,8 +39,8 @@
                     </div>
                     <div class="containerOptions">
                         <ion-button (click)="shareDisplay=!shareDisplay; selectedVideoToShare=video;"><ion-icon name="share"></ion-icon></ion-button>
-                        <ion-button (click)="downloadVideo(video.id)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
-                        <ion-button (click)="deleteVideo(video.id)"><ion-icon name="trash"></ion-icon></ion-button>
+                        <ion-button (click)="downloadVideo(video)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
+                        <ion-button (click)="deleteVideo(i,video.id, video.name)"><ion-icon name="trash"></ion-icon></ion-button>
                     </div>
                 </div>
             </ion-col>

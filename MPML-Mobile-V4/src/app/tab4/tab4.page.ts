@@ -23,9 +23,10 @@ export class Tab4Page {
       }
     } 
 
-    public login() {
+    public async login() {
       if(this.username!=""&&this.password!=""){
-        let success = this.fileService.login(this.username, this.password);
+        let success=false;
+        await this.fileService.login(this.username, this.password).then(data=><boolean>data).then(suc=>{success=suc});
         if(success){
           alert("Login Success!");
           this.loggedIn=true;

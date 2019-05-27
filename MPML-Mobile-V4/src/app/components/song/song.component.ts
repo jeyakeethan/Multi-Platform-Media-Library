@@ -28,7 +28,7 @@ export class SongComponent implements OnInit{
     }
     
     async ngOnInit(){
-      await this.delay(700);
+      await this.delay(1500);
       this.platform.ready().then(()=>{
         this.reload();
           /*this.songsRetrieved.forEach(element => {
@@ -55,13 +55,14 @@ export class SongComponent implements OnInit{
       this.searching = false;
     }
 
-    public async deleteSong(index:number){
-      var result = this.presentAlert();
-      if (result) {
-        await this.songs.splice(index, 1);
-        this.fs.deleteFile(0,index);
-      }
-      confirm("deleted");
+    public async deleteSong(index:number, id?, name?){
+      //var result = this.presentAlert();
+      //if (result) {
+        this.songs.splice(index, 1);
+        await this.fs.deleteFile(0,id,name);
+        
+      //}
+      //confirm("deleted");
     }
 
     public openItem($item){
@@ -110,7 +111,6 @@ export class SongComponent implements OnInit{
       }
     }
     public async reload(){
-      console.log("Hello wrks");
       if(FsService.user!=null){
         await this.fs.loadSongsFromServer().then(songs=>this.songsRetrieved=songs);
         this.songs = this.songsRetrieved;

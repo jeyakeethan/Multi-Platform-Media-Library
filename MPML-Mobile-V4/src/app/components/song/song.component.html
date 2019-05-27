@@ -21,10 +21,12 @@
         <ion-label class="details" color="primary" (click)="sortItems('size')">Size</ion-label>
         <ion-label class="detailsHide" color="primary" (click)="sortItems('duration')">Duration</ion-label>
     </ion-item>
-    <div class="reload" *ngIf="songs==null">
-        <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
-            <ion-icon name="refresh"></ion-icon> Refresh
-        </ion-button>
+    <div class="row reload" *ngIf="songs==null">
+        <div class="col" >
+            <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
+                <ion-icon name="refresh"></ion-icon> Refresh
+            </ion-button>
+        </div>
     </div>
     <ion-item-sliding *ngFor="let song of songs;let i = index;" #dynamicList>
         <ion-item (click)="openItem(song)">
@@ -35,7 +37,7 @@
             <ion-label class="detailsHide" color="dark">{{song.duration}}</ion-label>
         </ion-item>
         <ion-item-options side="start">
-            <ion-button (click)="deleteSong(song.id)"><ion-icon name="trash"></ion-icon></ion-button>
+            <ion-button (click)="deleteSong(i,song.id, song.name)"><ion-icon name="trash"></ion-icon></ion-button>
         </ion-item-options>
         <ion-item-options side="end">
             <ion-button *ngIf="!song.available" (click)="downloadSong(song)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>

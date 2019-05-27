@@ -1,46 +1,50 @@
-<ion-item-divider sticky="true">
-    <ion-item class="Search">
-        <ion-icon name="document" slot="start"></ion-icon>
-        <ion-searchbar class="searchbar" type="Search" [(ngModel)] = "searchTerm" (ionChange)="setFilteredItems()" (ionCancel)="cancelSearch()" autocomplete ="on"></ion-searchbar>
+<ion-content>
+    <ion-item-divider sticky="true">
+        <ion-item class="Search">
+            <ion-icon name="document" slot="start"></ion-icon>
+            <ion-searchbar class="searchbar" type="Search" [(ngModel)] = "searchTerm" (ionChange)="setFilteredItems()" (ionCancel)="cancelSearch()" autocomplete ="on"></ion-searchbar>
+        </ion-item>
+    </ion-item-divider>
+    <ion-item-divider sticky="true" *ngIf="shareDisplay">
+        <ion-item>
+                <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
+                <ion-button slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
+        </ion-item>
+        <div *ngIf="searching" class="spinner-container">
+            <ion-spinner></ion-spinner>
+        </div>
+    </ion-item-divider>
+    <ion-list class="list">
+    <ion-item color="light">
+        <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
+        <ion-label class="details" color="primary" (click)="sortItems('author')">Author</ion-label>
+        <ion-label class="detailsHide" color="primary" (click)="sortItems('date')">Date Added</ion-label>
+        <ion-label class="details" color="primary" (click)="sortItems('size')">Size</ion-label>
     </ion-item>
-</ion-item-divider>
-<ion-item-divider sticky="true" *ngIf="shareDisplay">
-    <ion-item>
-            <ion-input type="text" placeholder="Enter sharing id" name="sharedId" [(ngModel)]="sharedId" required></ion-input>
-            <ion-button slot="end"shape="round" fill="outline" (click)="share()"><ion-icon name="arrow-forward"></ion-icon></ion-button>
-    </ion-item>
-    <div *ngIf="searching" class="spinner-container">
-        <ion-spinner></ion-spinner>
+    <div class="row reload" *ngIf="PDFs==null">
+        <div class="col" >
+            <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
+                <ion-icon name="refresh"></ion-icon> Refresh
+            </ion-button>
+        </div>
     </div>
-</ion-item-divider>
-<ion-list class="list">
-<ion-item color="light">
-    <ion-label class="title" color="primary" (click)="sortItems('name')">Name</ion-label>
-    <ion-label class="details" color="primary" (click)="sortItems('author')">Author</ion-label>
-    <ion-label class="detailsHide" color="primary" (click)="sortItems('date')">Date Added</ion-label>
-    <ion-label class="details" color="primary" (click)="sortItems('size')">Size</ion-label>
-</ion-item>
-<div class="reload" *ngIf="PDFs==null">
-    <ion-button slot="end" (click)="reload()" size="large" shape="round" fill="outline">
-        <ion-icon name="refresh"></ion-icon> Refresh
-    </ion-button>
-</div>
-<ion-item-sliding *ngFor="let PDF of PDFs;let i = index;">
-    <ion-item (click)="openItem(PDF)">
-        <ion-label class="title" color="dark">{{PDF.name}}</ion-label>
-        <ion-label class="details" color="dark">{{PDF.author}}</ion-label>
-        <ion-label class="detailsHide" color="dark">{{PDF.date}}</ion-label>
-        <ion-label class="details" color="dark">{{PDF.size}}</ion-label>
-    </ion-item>
-    <ion-item-options side="start">
-        <ion-button (click)="deletePDF(PDF.id)"><ion-icon name="trash"></ion-icon></ion-button>
-    </ion-item-options>
-    <ion-item-options side="end">
-        <ion-button (click)="downloadPDF(PDF.id)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
-        <ion-button (click)="shareDisplay=!shareDisplay; selectedPDFToShare=PDF;"><ion-icon name="share"></ion-icon></ion-button>
-    </ion-item-options>
-</ion-item-sliding>
-</ion-list>
+    <ion-item-sliding *ngFor="let PDF of PDFs;let i = index;">
+        <ion-item (click)="openItem(PDF)">
+            <ion-label class="title" color="dark">{{PDF.name}}</ion-label>
+            <ion-label class="details" color="dark">{{PDF.author}}</ion-label>
+            <ion-label class="detailsHide" color="dark">{{PDF.date}}</ion-label>
+            <ion-label class="details" color="dark">{{PDF.size}}</ion-label>
+        </ion-item>
+        <ion-item-options side="start">
+            <ion-button (click)="deletePDF(i,PDF.id, PDF.name)"><ion-icon name="trash"></ion-icon></ion-button>
+        </ion-item-options>
+        <ion-item-options side="end">
+            <ion-button (click)="downloadPDF(PDF)"><ion-icon name="arrow-round-down"></ion-icon></ion-button>
+            <ion-button (click)="shareDisplay=!shareDisplay; selectedPDFToShare=PDF;"><ion-icon name="share"></ion-icon></ion-button>
+        </ion-item-options>
+    </ion-item-sliding>
+    </ion-list>
+</ion-content>
 <!--ion-item>
     <ion-label>{{Notice}}</ion-label>
 </ion-item-->

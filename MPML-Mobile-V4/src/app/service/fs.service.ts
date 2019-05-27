@@ -188,7 +188,7 @@ export class FsService {
       case 1:
         this.file.createDir(this.file.externalRootDirectory, "MediaLibrary",false);
         this.file.createDir(this.file.externalRootDirectory+"MediaLibrary", "Movies",false);
-        let path1 =  this.file.externalRootDirectory+'MediaLibrary/Movies/'+id+".mp4";
+        let path1 =  this.file.externalRootDirectory+'MediaLibrary/Movies/'+name+".mp4";
         const url1 = "https://medialibraryweb.000webhostapp.com/MediaLibrary/Movies/"+id+".mp4";
         fileTransfer.download(url1, path1).then((entry) => {
           console.log('download complete: ' + entry.toURL());
@@ -198,7 +198,7 @@ export class FsService {
       case 2:
         this.file.createDir(this.file.externalRootDirectory, "MediaLibrary",false);
         this.file.createDir(this.file.externalRootDirectory+"MediaLibrary", "PDFs",false);
-        let path2 =  this.file.externalRootDirectory+'MediaLibrary/PDFs/'+id+".pdf";
+        let path2 =  this.file.externalRootDirectory+'MediaLibrary/PDFs/'+name+".pdf";
         const url2 = "https://medialibraryweb.000webhostapp.com/MediaLibrary/PDFs/"+id+".pdf";
         fileTransfer.download(url2, path2).then((entry) => {
           console.log('download complete: ' + entry.toURL());
@@ -218,49 +218,60 @@ export class FsService {
     });
   } 
 
-  deleteFile(mode:number,id?):any{
+  deleteFile(mode:number,id?,name?):any{
     this.deleteFileServer(mode,id);
     switch(mode){
       case 0:
-        this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/Songs/'+id+'.mp3').then((fileAvailable)=>{
+        this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Songs/',name+'.mp3');
+        return true;
+        /*this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/Songs/'+name+'.mp3').then((fileAvailable)=>{
           if(fileAvailable){
-            this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Songs/',id+'.mp3');
+            this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Songs/',name+'.mp3');
             return true;
           }
           else{
             return false;
           }
-        });
+        });*/
       break;
       case 1:
-      this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/Movies/'+id+'.mp4').then((fileAvailable)=>{
-        if(fileAvailable){
-          this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Movies/',id+'.mp4');
+        this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Movies/',name+'.mp4');
+        return true;
+      //this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/Movies/'+name+'.mp4').then((fileAvailable)=>{
+        /*if(true){//fileAvailable){
+          this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/Movies/',name+'.mp4');
           return true;
         }
         else{
           return false;
         }
-      });
+      });*/
       break;
       case 2:
-      this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/PDFs/'+id+'.pdf').then((fileAvailable)=>{
+        this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/PDFs/',name+'.pdf');
+        return true;
+      /*this.file.checkFile(this.file.externalRootDirectory, 'MediaLibrary/PDFs/'+name+'.pdf').then((fileAvailable)=>{
         if(fileAvailable){
-          this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/PDFs/',id+'.pdf');
+          this.file.removeFile(this.file.externalRootDirectory+'MediaLibrary/PDFs/',name+'.pdf');
           return true;
         }
         else{
           return false;
         }
-      });
+      });*/
       break;
     }
   }
   public async login(name:string, pass:string){
     const params = {username:name,password:pass};
-    await this.httpClient.post("https://medialibraryweb.000webhostapp.com/login.php",JSON.stringify(params)).toPromise().then(res =>  <User>res.valueOf()['data'][0]).then(data => FsService.user=data);
-    this.storage.set("user",FsService.user)
-    return (FsService.user.name==name);
+    let tempUser;
+    await this.httpClient.post("https://medialibraryweb.000webhostapp.com/login.php",JSON.stringify(params)).toPromise().then(res => <User>res.valueOf()['data'][0]).then(data => tempUser=data);
+    if(tempUser.name==name){
+      FsService.user=tempUser;
+      this.storage.set("user",FsService.user)
+      return true;
+    }
+    return false;
   }
   public logout():boolean{
     this.storage.remove("user");
@@ -272,6 +283,7 @@ export class FsService {
     console.log(params);
     this.httpClient.post(url,JSON.stringify(params)).subscribe((response) => {
       console.log(response);
+      alert("The file shared successfully with "+user);
     }, error => {
       console.log(error);
     });
