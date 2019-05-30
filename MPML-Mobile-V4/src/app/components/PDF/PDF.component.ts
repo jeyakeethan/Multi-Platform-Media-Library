@@ -57,11 +57,11 @@ export class PDFComponent implements OnInit{
     }
 
     public async deletePDF(index:number,id?,name?){
-      //var result = confirm("Want to delete?");
-      //if (result) {
+      var result = confirm("Do you really want to delete?");
+      if (result) {
         this.PDFs.splice(index,1);
         await this.fs.deleteFile(2,id, name);
-        //}
+      }
     }
 
     public openItem($item){

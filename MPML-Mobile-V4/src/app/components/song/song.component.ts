@@ -28,7 +28,7 @@ export class SongComponent implements OnInit{
     }
     
     async ngOnInit(){
-      await this.delay(1500);
+      await this.delay(1900);
       this.platform.ready().then(()=>{
         this.reload();
           /*this.songsRetrieved.forEach(element => {
@@ -56,15 +56,12 @@ export class SongComponent implements OnInit{
     }
 
     public async deleteSong(index:number, id?, name?){
-      //var result = this.presentAlert();
-      //if (result) {
-        this.songs.splice(index, 1);
-        await this.fs.deleteFile(0,id,name);
-        
-      //}
-      //confirm("deleted");
+      var result = confirm("Do you really want to delete?");
+        if (result) {
+          this.songs.splice(index, 1);
+          this.fs.deleteFile(0,id,name);
+        }
     }
-
     public openItem($item){
       let available = false;
       if(this.platform.is("android")){
@@ -132,7 +129,23 @@ export class SongComponent implements OnInit{
   public share(){
     this.fs.share(0,this.selectedSongToShare.id,this.sharedId);
   }
-  public async presentAlert() {
+  public parseDuration(sec_num:number):String{
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let h = String(hours);
+    let m = String(minutes);
+    let s = String(seconds);
+    if (hours   < 10) {h   = "0"+h;}
+    if (minutes < 10) {m = "0"+m;}
+    if (seconds < 10) {s = "0"+s;}
+    let h1 = h == "00"?"":h+":";
+    return h1 +m+':'+s;
+}
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+  /*public async presentAlert() {
     var yes = false;
     const alert = await this.alertController.create({
       header: 'Warning!',
@@ -158,7 +171,10 @@ export class SongComponent implements OnInit{
     await alert.present();
     return yes; 
   }
-  delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-  }
+  await this.presentAlert().then(result=>{
+      if (result) {
+        this.songs.splice(index, 1);
+        this.fs.deleteFile(0,id,name);
+      }
+    });*/
 }

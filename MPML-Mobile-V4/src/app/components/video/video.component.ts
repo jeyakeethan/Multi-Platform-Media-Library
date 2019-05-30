@@ -58,11 +58,11 @@ export class VideoComponent implements OnInit{
   }
 
   public async deleteVideo(index:number, id?, name?){
-    //var result = confirm("Want to delete?");
-    //if (result) {
+    var result = confirm("Do you really want to delete?");
+    if (result) {
       this.videos.splice(index, 1);
       await this.fs.deleteFile(1,id,name);
-      //}
+    }
   }
 
   public openItem($item){
